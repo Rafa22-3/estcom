@@ -204,7 +204,7 @@
             const password = document.getElementById('custLoginPassword').value;
             const errBox = document.getElementById('cust-error-box');
 
-            const res = await fetch('/.netlify/functions/api?action=login', {
+            const res = await fetch('/.netlify/functions/api?action=register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -265,7 +265,7 @@
                 return;
             }
 
-            const res = await fetch('/.netlify/functions/api?action=login', {
+            const res = await fetch('/.netlify/functions/api?action=register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: user, password: pass })
