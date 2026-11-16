@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth scroll-pt-20">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estcom | Resto & Bar</title>
+    <!-- Tailwind CSS CDN -->
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: {
+                            DEFAULT: '#0F1115',
+                            light: '#181B20',
+                            card: '#1E222A',
+                            border: '#2A2F3A'
+                        },
+                        copper: {
+                            light: '#EF4444', 
+                            DEFAULT: '#DC2626', 
+                            dark: '#991B1B',  
+                            glow: 'rgba(220, 38, 38, 0.35)'
+                        },
+                        cream: {
+                            DEFAULT: '#F5F5F0',
+                            muted: '#A0A5B1'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            height: 6px;
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F1115;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A2F3A;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #DC2626;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #F87171 0%, #DC2626 50%, #7F1D1D 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border-glow {
+            box-shadow: 0 0 25px -5px rgba(220, 38, 38, 0.35);
+        }
+        .backdrop-blur-md-dark {
+            backdrop-filter: blur(12px);
+            background-color: rgba(15, 17, 21, 0.85);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden !important;
+            }
+            #receiptModal, #receiptModal * {
+                visibility: visible !important;
+            }
+            #receiptModal {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                background: white !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #receiptCard {
+                box-shadow: none !important;
+                border: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-charcoal text-cream font-sans antialiased selection:bg-copper selection:text-white relative overflow-x-hidden">
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-gradient-to-r from-charcoal via-copper-dark to-charcoal text-center text-xs tracking-widest text-cream py-2 px-4 border-b border-copper/30 uppercase font-medium">
+        <span class="inline-block animate-pulse mr-2">✦</span> Walk-ins Welcome • KTV Room Reservation Available (₱600/hr) • Free Billiards <span class="inline-block animate-pulse ml-2">✦</span>
+    </div>
+
+    <!-- NAVIGATION BAR -->
+    <nav id="navbar" class="sticky top-0 z-40 transition-all duration-300 border-b border-charcoal-border/50 backdrop-blur-md-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center lg:hidden">
+                    <button id="mobile-menu-btn" class="text-cream hover:text-copper-light p-2 transition-colors focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="flex-1 lg:flex-none text-center lg:text-left">
+                    <a href="#" class="inline-block">
+                        <span class="font-serif text-2xl sm:text-3xl font-bold tracking-widest uppercase gold-gradient-text">Estcom</span>
+                        <span class="block text-[9px] tracking-[0.3em] text-cream-muted uppercase -mt-1">Resto & Bar</span>
+                    </a>
+                </div>
+
+                <div class="hidden lg:flex items-center space-x-8 text-sm tracking-widest uppercase font-medium">
+                    <a href="#about" class="hover:text-copper-light transition-colors py-1 relative group">
+                        Our Story
+                        <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-copper transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#food-menu" class="hover:text-copper-light transition-colors py-1 relative group">
+                        Menu
+                        <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-copper transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#gallery" class="hover:text-copper-light transition-colors py-1 relative group">
+                        Gallery
+                        <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-copper transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#reservation" class="hover:text-copper-light transition-colors py-1 relative group">
+                        Reservations
+                        <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-copper transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#reviews" class="hover:text-copper-light transition-colors py-1 relative group">
+                        Reviews
+                        <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-copper transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                </div>
+
+                <!-- RIGHT SIDE BUTTONS -->
+                <div class="flex items-center space-x-3">
+                    <!-- LOGIN / CUSTOMER PROFILE BUTTON -->
+                    <a href="login.html" id="auth-nav-link" class="relative px-3.5 py-2 bg-charcoal-light border border-charcoal-border hover:border-copper text-cream-muted hover:text-white rounded text-xs font-semibold uppercase tracking-wider transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-user text-copper-light"></i>
+                        <span id="auth-btn-label">Login</span>
+                        <span id="active-order-dot" class="hidden w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    </a>
+
+                    <!-- LOGOUT BUTTON -->
+                    <button id="logout-btn" onclick="handleLogout()" class="hidden px-3 py-2 bg-red-950/60 border border-red-600 text-red-400 hover:bg-red-600 hover:text-white rounded text-xs font-semibold uppercase tracking-wider transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+
+                    <!-- CART BUTTON -->
+                    <button id="open-cart-btn" class="relative p-2 text-cream hover:text-copper-light transition-colors rounded-full hover:bg-charcoal-light border border-charcoal-border">
+                        <i class="fa-solid fa-utensils text-base"></i>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 bg-copper text-white font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                    </button>
+
+                    <a href="#reservation" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold tracking-widest uppercase text-white bg-copper hover:bg-red-700 rounded-sm transition-all duration-300 shadow-md border border-copper/50">
+                        Book KTV / Table
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden border-b border-charcoal-border bg-charcoal-light px-4 pt-2 pb-6 space-y-3">
+            <a href="#about" class="mobile-nav-link block py-2 text-sm uppercase tracking-wider text-cream hover:text-copper-light">Our Story</a>
+            <a href="#food-menu" class="mobile-nav-link block py-2 text-sm uppercase tracking-wider text-cream hover:text-copper-light">Menu</a>
+            <a href="#gallery" class="mobile-nav-link block py-2 text-sm uppercase tracking-wider text-cream hover:text-copper-light">Gallery</a>
+            <a href="#reservation" class="mobile-nav-link block py-2 text-sm uppercase tracking-wider text-cream hover:text-copper-light">Reservations</a>
+            <a href="#reviews" class="mobile-nav-link block py-2 text-sm uppercase tracking-wider text-cream hover:text-copper-light">Reviews</a>
+            <a href="login.html" id="mobile-login-link" class="mobile-nav-link block py-2 text-sm uppercase tracking-wider text-copper-light hover:text-white"><i class="fa-solid fa-user mr-2"></i>Customer Login</a>
+            <a href="#reservation" class="mobile-nav-link block w-full text-center py-3 text-xs uppercase tracking-widest font-semibold text-white bg-copper rounded-sm mt-4">Book a Table</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden border-b border-charcoal-border">
+        <div class="absolute inset-0 z-0">
+            <img src="estcom.jpg" alt="Estcom Resto and Bar Atmosphere" class="w-full h-full object-cover object-center filter brightness-40 scale-105 transition-transform duration-10000 hover:scale-100">
+            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/60 to-charcoal/40"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-charcoal/40 to-charcoal"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6">
+            <div class="inline-flex items-center space-x-2 border border-copper/50 bg-charcoal/80 backdrop-blur-md px-4 py-1.5 rounded-full mb-6">
+                <i class="fa-solid fa-fire text-copper-light text-xs"></i>
+                <span class="text-xs uppercase tracking-widest text-cream font-medium">Asian Fusion Resto & Bar</span>
+                <i class="fa-solid fa-fire text-copper-light text-xs"></i>
+            </div>
+            
+            <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal tracking-wide text-cream mb-6 leading-tight">
+                From Garage Hangout to <span class="italic font-light gold-gradient-text">Premier Resto Bar</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-cream-muted font-light tracking-wide mb-10 leading-relaxed">
+                Enjoy delicious Asian Fusion food, cold beverages, free billiards, and private KTV room sessions with your favorite crew.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                <a href="#food-menu" class="w-full sm:w-auto px-8 py-4 bg-copper text-white font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-red-700 transition-all duration-300 shadow-lg border border-copper/40">
+                    Explore Food & Drinks
+                </a>
+                <a href="#reservation" class="w-full sm:w-auto px-8 py-4 border border-copper/50 text-cream font-semibold text-xs uppercase tracking-widest rounded-sm hover:bg-copper/20 hover:border-copper transition-all duration-300 backdrop-blur-sm">
+                    Book Table / KTV
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR STORY SECTION -->
+    <section id="about" class="min-h-screen flex flex-col justify-center bg-charcoal-light relative border-b border-charcoal-border py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                
+                <div class="lg:col-span-6 relative">
+                    <div class="relative z-10 rounded-sm overflow-hidden border border-charcoal-border shadow-2xl">
+                        <img src="esctomsign1.jpg" alt="Estcom Sign" class="w-full h-[480px] object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="absolute -bottom-8 -right-4 sm:-right-8 w-2/3 z-20 rounded-sm overflow-hidden border-2 border-copper p-1 bg-charcoal shadow-2xl hidden sm:block">
+                        <img src="lobby.jpg" alt="Estcom Interior" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="absolute -top-6 -left-6 w-24 h-24 border-t-2 border-l-2 border-copper/60 z-0"></div>
+                </div>
+
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="inline-block text-xs uppercase tracking-widest text-copper-light font-semibold">Our Journey & Concept</div>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-normal text-cream leading-tight">
+                        Built on Friendship, <span class="italic gold-gradient-text">Driven by Passion</span>
+                    </h2>
+                    <p class="text-cream-muted leading-relaxed font-light text-base">
+                        Estcom started in 2019 at San Nicolas (right next to Kolets). It began as a humble garage setup when the founder, <strong>Sir Edmon Comia</strong>, was encouraged by friends who wanted a cozy hangout space for drinks and finger foods (pulutan). 
+                    </p>
+                    <p class="text-cream-muted leading-relaxed font-light text-base">
+                        In 2025, Estcom expanded to Wawa, powered by a dedicated team of 5 staff members committed to serving exceptional food and great vibes.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-4 text-sm text-cream-muted font-light pt-2">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-check text-copper-light text-xs"></i>
+                            <span>Walk-ins Welcome</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-check text-copper-light text-xs"></i>
+                            <span>Private KTV (₱600/hr)</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-check text-copper-light text-xs"></i>
+                            <span>Free Billiards Table</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-check text-copper-light text-xs"></i>
+                            <span>Advance & Delivery Orders</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-charcoal-border flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <button onclick="openMapModal()" class="px-6 py-3 bg-copper hover:bg-red-700 text-white font-semibold text-xs uppercase tracking-widest rounded-sm transition-all shadow-md flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-sm"></i>
+                            <span>View Interactive Map</span>
+                        </button>
+                        <span class="text-xs text-cream-muted">
+                            <i class="fa-solid fa-location-dot text-copper-light mr-1"></i> Cosico Avenue, Del Remedio, San Pablo City
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section id="food-menu" class="min-h-screen flex flex-col justify-center bg-charcoal relative border-b border-charcoal-border py-20">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 w-full">
+            <div class="text-center max-w-3xl mx-auto space-y-3 mb-12">
+                <span class="text-copper-light text-xs font-semibold uppercase tracking-[0.25em]">Culinary & Beverages</span>
+                <h2 class="font-serif text-3xl md:text-5xl font-normal text-cream">Our Official Menu</h2>
+                <div class="w-16 h-[1px] bg-copper mx-auto my-2"></div>
+                <p class="text-cream-muted text-sm font-light">Select a category below to explore dishes and customize sizes (16 oz / 22 oz for drinks).</p>
+            </div>
+
+            <!-- UNIFIED CATEGORY SELECTION BAR -->
+            <div class="flex flex-wrap justify-center items-center gap-2 max-w-5xl mx-auto mb-12 p-2 bg-charcoal-light border border-charcoal-border rounded-xl">
+                <button onclick="filterSubCategory('all')" id="pill-all" class="sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all bg-copper text-white shadow">All Items</button>
+                <button onclick="filterSubCategory('beverages')" id="pill-beverages" class="sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-cream-muted hover:text-cream transition-all">Beverages & Bar</button>
+                <button onclick="filterSubCategory('appetizers')" id="pill-appetizers" class="sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-cream-muted hover:text-cream transition-all">Appetizers</button>
+                <button onclick="filterSubCategory('pasta')" id="pill-pasta" class="sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-cream-muted hover:text-cream transition-all">Pasta</button>
+                <button onclick="filterSubCategory('sandwiches')" id="pill-sandwiches" class="sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-cream-muted hover:text-cream transition-all">Sandwiches</button>
+                <button onclick="filterSubCategory('riceBowls')" id="pill-riceBowls" class="sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-cream-muted hover:text-cream transition-all">Rice Bowls</button>
+                <button onclick="filterSubCategory('mainDishes')" id="pill-mainDishes" class="sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-cream-muted hover:text-cream transition-all">Mains</button>
+                <button onclick="filterSubCategory('pizza')" id="pill-pizza" class="sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-cream-muted hover:text-cream transition-all">Pizza</button>
+                <button onclick="filterSubCategory('breakfast')" id="pill-breakfast" class="sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-cream-muted hover:text-cream transition-all">Breakfast</button>
+            </div>
+
+            <!-- MENU GRID -->
+            <div id="unified-menu-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section id="gallery" class="min-h-screen flex flex-col justify-center bg-charcoal-card relative border-y border-copper/20 py-20">
+        <div class="max-w-[95%] mx-auto w-full">
+            <div class="text-center max-w-3xl mx-auto space-y-3 mb-12">
+                <span class="text-copper-light text-xs font-semibold uppercase tracking-[0.25em]">Atmosphere & Vibes</span>
+                <h2 class="font-serif text-3xl md:text-5xl font-normal text-cream">Estcom Gallery</h2>
+                <div class="w-16 h-[1px] bg-copper mx-auto my-2"></div>
+                <p class="text-cream-muted text-sm sm:text-base font-light">Explore our ambient dining setups, private KTV room, and chill lounges.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="overflow-hidden rounded-xl border border-charcoal-border bg-charcoal group relative shadow-2xl hover:border-copper/50 transition-all duration-300">
+                    <img src="bar.jpg" alt="Main Dining Hall" class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-85 group-hover:opacity-100 transition-opacity flex items-end p-5">
+                        <div>
+                            <span class="text-[10px] text-copper-light uppercase tracking-widest font-semibold block">Section 01</span>
+                            <h4 class="text-base font-semibold text-cream">Resto Bar</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="overflow-hidden rounded-xl border border-charcoal-border bg-charcoal group relative shadow-2xl hover:border-copper/50 transition-all duration-300">
+                    <img src="lobby1.jpg" alt="Estcom Lounge Sign" class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-85 group-hover:opacity-100 transition-opacity flex items-end p-5">
+                        <div>
+                            <span class="text-[10px] text-copper-light uppercase tracking-widest font-semibold block">Section 02</span>
+                            <h4 class="text-base font-semibold text-cream">Estcom Lounge Sign</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="overflow-hidden rounded-xl border border-charcoal-border bg-charcoal group relative shadow-2xl hover:border-copper/50 transition-all duration-300">
+                    <img src="dining.jpg" alt="Main Dining Hall" class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-85 group-hover:opacity-100 transition-opacity flex items-end p-5">
+                        <div>
+                            <span class="text-[10px] text-copper-light uppercase tracking-widest font-semibold block">Section 03</span>
+                            <h4 class="text-base font-semibold text-cream">Main Dining Hall</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-hidden rounded-xl border border-charcoal-border bg-charcoal group relative shadow-2xl hover:border-copper/50 transition-all duration-300">
+                    <img src="billiards.jpg" alt="Billiards & Music Lounge" class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-85 group-hover:opacity-100 transition-opacity flex items-end p-5">
+                        <div>
+                            <span class="text-[10px] text-copper-light uppercase tracking-widest font-semibold block">Section 04</span>
+                            <h4 class="text-base font-semibold text-cream">Billiards & Music Lounge</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CUSTOMER PROFILE & LIVE TRACKER MODAL (ORDERS & RESERVATIONS) -->
+    <div id="profileTrackerModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[85] hidden flex items-center justify-center p-4">
+        <div class="bg-charcoal w-full max-w-2xl max-h-[90vh] flex flex-col rounded-2xl border border-copper/50 shadow-2xl relative text-cream overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-charcoal-border bg-charcoal-light flex items-center justify-between">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-full bg-copper/20 border border-copper flex items-center justify-center text-copper-light text-lg font-bold">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <h3 id="profile-modal-name" class="font-serif text-2xl font-bold text-cream leading-none">Customer Profile</h3>
+                        <p id="profile-modal-contact" class="text-xs text-cream-muted mt-1">Account Details</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="refreshProfileTracker()" title="Refresh Live Status" class="px-3 py-1.5 bg-charcoal border border-charcoal-border hover:border-emerald-500 text-emerald-400 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-rotate"></i>
+                        <span class="hidden sm:inline">Refresh</span>
+                    </button>
+                    <button onclick="closeProfileModal()" class="text-cream-muted hover:text-white text-2xl font-bold px-2">&times;</button>
+                </div>
+            </div>
+
+            <!-- Tracker Sub-Tabs (My Orders vs My Reservations) -->
+            <div class="flex border-b border-charcoal-border bg-charcoal-card px-6 pt-3 gap-2">
+                <button onclick="switchProfileSubTab('orders')" id="prof-tab-orders" class="px-4 py-2.5 rounded-t-lg text-xs font-bold uppercase tracking-wider bg-copper text-white transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-bag-shopping"></i> My Orders
+                </button>
+                <button onclick="switchProfileSubTab('reservations')" id="prof-tab-reservations" class="px-4 py-2.5 rounded-t-lg text-xs font-bold uppercase tracking-wider text-cream-muted hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-calendar-check"></i> My Table & KTV Bookings
+                </button>
+            </div>
+
+            <!-- Orders List Body -->
+            <div id="customer-orders-container" class="p-6 overflow-y-auto space-y-5 flex-1"></div>
+
+            <!-- Reservations List Body -->
+            <div id="customer-reservations-container" class="hidden p-6 overflow-y-auto space-y-5 flex-1"></div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-charcoal-border bg-charcoal-light flex justify-between items-center text-xs text-cream-muted">
+                <span><i class="fa-solid fa-circle-info text-copper-light mr-1"></i> Updates live when Estcom staff approves or updates your request.</span>
+                <button onclick="closeProfileModal()" class="px-4 py-2 bg-copper hover:bg-red-700 text-white font-semibold rounded text-xs uppercase tracking-wider transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DISH & DRINK VARIANT / INGREDIENTS MODAL -->
+    <div id="dishModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[85] hidden flex items-center justify-center p-4">
+        <div class="bg-charcoal w-full max-w-lg p-6 sm:p-8 rounded-xl border border-copper/50 shadow-2xl relative text-cream">
+            <button onclick="closeDishModal()" class="absolute top-4 right-4 text-cream-muted hover:text-cream text-2xl font-bold">&times;</button>
+            
+            <div class="flex items-center space-x-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-copper/20 border border-copper flex items-center justify-center text-copper-light">
+                    <i id="dish-modal-icon" class="fa-solid fa-utensils"></i>
+                </div>
+                <div>
+                    <h3 id="dish-modal-name" class="font-serif text-2xl font-bold text-cream">Item Name</h3>
+                    <span id="dish-modal-category" class="text-xs text-copper-light uppercase tracking-wider font-semibold">ESTCOM SELECTION</span>
+                </div>
+            </div>
+
+            <p id="dish-modal-desc" class="text-xs text-cream-muted mb-4 leading-relaxed">Overview description.</p>
+
+            <div id="modal-options-container" class="mb-4 bg-charcoal-light border border-charcoal-border p-3.5 rounded-lg">
+                <label class="block text-xs font-semibold text-cream uppercase tracking-wider mb-2">Select Size / Serving:</label>
+                <div id="modal-options-list" class="grid grid-cols-2 gap-2"></div>
+            </div>
+
+            <div class="bg-charcoal-light border border-charcoal-border rounded-lg p-4 mb-6">
+                <h4 class="text-xs font-semibold uppercase tracking-wider text-cream mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-leaf text-copper-light"></i>
+                    <span>Ingredients Breakdown:</span>
+                </h4>
+                <ul id="dish-modal-ingredients" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-cream-muted"></ul>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-charcoal-border">
+                <div>
+                    <span class="text-[10px] text-cream-muted uppercase block">Selected Price</span>
+                    <span id="dish-modal-price" class="font-serif text-2xl font-bold text-copper-light">₱0.00</span>
+                </div>
+                <button id="dish-modal-add-btn" class="px-6 py-3 bg-copper hover:bg-red-700 text-white font-semibold text-xs uppercase tracking-widest rounded-sm transition-all shadow-md flex items-center gap-2">
+                    <i class="fa-solid fa-cart-plus"></i>
+                    <span>Add to Order</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESERVATION SECTION -->
+    <section id="reservation" class="min-h-screen flex flex-col justify-center bg-charcoal relative border-b border-charcoal-border py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-xs uppercase tracking-widest text-copper-light font-semibold">Direct Bookings</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-normal text-cream leading-tight">
+                        Reserve KTV & <span class="italic gold-gradient-text">Dining Tables</span>
+                    </h2>
+                    <p class="text-cream-muted font-light leading-relaxed">
+                        Walk-ins are always welcome! However, our private KTV Room must be reserved in advance at <strong>₱600 per hour</strong>. There is <strong>no reservation fee</strong> required to book.
+                    </p>
+
+                    <div class="space-y-4 pt-4 border-t border-charcoal-border">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-full border border-copper/40 flex items-center justify-center text-copper-light shrink-0">
+                                <i class="fa-solid fa-microphone font-bold"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold uppercase tracking-wider text-cream">KTV Room Rate</h4>
+                                <p class="text-xs text-cream-muted mt-1">₱600 / Hour • Reservation Required (Zero Deposit)</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-full border border-copper/40 flex items-center justify-center text-copper-light shrink-0">
+                                <i class="fa-solid fa-circle-dot font-bold"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold uppercase tracking-wider text-cream">Billiards Lounge</h4>
+                                <p class="text-xs text-cream-muted mt-1">Free for all dining customers</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-full border border-copper/40 flex items-center justify-center text-copper-light shrink-0">
+                                <i class="fa-solid fa-phone font-bold"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold uppercase tracking-wider text-cream">Call for Instant Reservation</h4>
+                                <p class="text-xs text-cream-muted mt-1">+63 912 345 6789</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 bg-charcoal-light p-8 sm:p-10 rounded-sm border border-charcoal-border shadow-2xl relative gold-border-glow">
+                    <form id="reservation-form" class="space-y-6">
+                        <h3 class="font-serif text-2xl text-cream border-b border-charcoal-border pb-4">Table / KTV Booking Request</h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-2 font-medium">Reservation Type</label>
+                                <select id="res-type" required class="w-full bg-charcoal border border-charcoal-border rounded-sm px-4 py-3 text-cream focus:outline-none focus:border-copper text-sm">
+                                    <option value="Dining Table">Dining Table (Walk-in / Reserved)</option>
+                                    <option value="KTV Room (₱600/hr)">Private KTV Room (₱600/hr)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-2 font-medium">Number of Guests</label>
+                                <select id="res-guests" required class="w-full bg-charcoal border border-charcoal-border rounded-sm px-4 py-3 text-cream focus:outline-none focus:border-copper text-sm">
+                                    <option value="2-4 Guests">2-4 Guests</option>
+                                    <option value="5-8 Guests">5-8 Guests</option>
+                                    <option value="9+ Guests">9+ Guests (Group/Party)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-2 font-medium">Date</label>
+                                <input type="date" id="res-date" required class="w-full bg-charcoal border border-charcoal-border rounded-sm px-4 py-3 text-cream focus:outline-none focus:border-copper text-sm">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-2 font-medium">Preferred Time</label>
+                                <select id="res-time" required class="w-full bg-charcoal border border-charcoal-border rounded-sm px-4 py-3 text-cream focus:outline-none focus:border-copper text-sm">
+                                    <option value="17:00">17:00 (5:00 PM)</option>
+                                    <option value="18:00">18:00 (6:00 PM)</option>
+                                    <option value="19:00">19:00 (7:00 PM)</option>
+                                    <option value="20:00">20:00 (8:00 PM)</option>
+                                    <option value="21:00">21:00 (9:00 PM)</option>
+                                    <option value="22:00">22:00 (10:00 PM)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-2 font-medium">Full Name</label>
+                                <input type="text" id="res-name" placeholder="e.g. Juan Dela Cruz" required class="w-full bg-charcoal border border-charcoal-border rounded-sm px-4 py-3 text-cream focus:outline-none focus:border-copper text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-2 font-medium">Contact Phone Number</label>
+                                <input type="tel" id="res-phone" placeholder="0912 345 6789" required class="w-full bg-charcoal border border-charcoal-border rounded-sm px-4 py-3 text-cream focus:outline-none focus:border-copper text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-cream-muted mb-2 font-medium">Special Notes or Duration (for KTV)</label>
+                            <textarea id="res-notes" rows="2" placeholder="State preferred KTV hours or dietary considerations..." class="w-full bg-charcoal border border-charcoal-border rounded-sm px-4 py-3 text-cream focus:outline-none focus:border-copper text-sm"></textarea>
+                        </div>
+
+                        <div id="availability-status" class="hidden text-xs py-2 px-3 rounded bg-copper/10 border border-copper/30 text-copper-light font-medium flex items-center space-x-2">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="availability-text">Processing reservation details...</span>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-copper hover:bg-red-700 text-white font-semibold text-xs uppercase tracking-widest rounded-sm transition-all duration-300 shadow-md">
+                            Submit Reservation Request
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
+    <section id="reviews" class="min-h-screen flex flex-col justify-center bg-charcoal-light relative border-b border-charcoal-border py-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="text-center mb-12">
+                <span class="text-xs uppercase tracking-widest text-copper-light font-semibold">Guest Experiences</span>
+                <h2 class="font-serif text-4xl font-normal text-cream mt-2">Words of Praise</h2>
+            </div>
+
+            <div class="relative bg-charcoal p-8 sm:p-12 rounded-sm border border-charcoal-border gold-border-glow mb-10">
+                <div class="text-center space-y-6">
+                    <div id="review-stars" class="flex justify-center text-copper-light space-x-1 text-sm"></div>
+
+                    <p id="review-quote" class="font-serif italic text-xl sm:text-2xl text-cream font-light min-h-[100px] flex items-center justify-center">
+                        "Great tambayan! The Sisig Pizza and Beef Salpicao are unbeatable, and having private KTV plus free billiards makes it the best spot in San Pablo."
+                    </p>
+
+                    <div>
+                        <h4 id="review-author" class="text-sm font-semibold uppercase tracking-widest text-copper-light">Marco De Silva</h4>
+                        <span id="review-role" class="text-xs text-cream-muted">Local Guide & Foodie</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-charcoal-border/50">
+                    <button id="prev-review" class="p-2 text-cream-muted hover:text-copper-light transition-colors">
+                        <i class="fa-solid fa-arrow-left text-lg"></i>
+                    </button>
+
+                    <div class="flex space-x-2 items-center" id="review-dots"></div>
+
+                    <button id="next-review" class="p-2 text-cream-muted hover:text-copper-light transition-colors">
+                        <i class="fa-solid fa-arrow-right text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button onclick="openReviewModal()" class="px-8 py-3 bg-transparent border border-copper text-copper-light hover:bg-copper hover:text-white font-semibold text-xs uppercase tracking-widest rounded-sm transition-all duration-300 shadow-md">
+                    Do you want to leave a review?
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-charcoal pt-16 pb-12 border-t border-charcoal-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="space-y-4">
+                    <span class="font-serif text-2xl font-bold tracking-widest uppercase gold-gradient-text">Estcom</span>
+                    <p class="text-xs text-cream-muted leading-relaxed">
+                        Asian Fusion Resto & Bar founded by Edmon Comia. Serving mouthwatering meals, cold beverages, private KTV rooms, and free billiards.
+                    </p>
+                    <div class="flex space-x-4 text-cream-muted text-sm pt-2">
+                        <a href="https://www.facebook.com/profile.php?id=61555703230170" class="hover:text-copper-light transition-colors"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="hover:text-copper-light transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-xs font-semibold uppercase tracking-widest text-copper-light mb-4">Contact & Location</h4>
+                    <p class="text-xs text-cream-muted leading-relaxed">Cosico Avenue, Del Remedio, San Pablo City, Philippines, 4000</p>
+                    <p class="text-xs text-cream-muted">+63 912 345 6789</p>
+                    <p class="text-xs text-copper-light font-medium">Walk-ins Welcome • KTV via Reservation</p>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-widest text-copper-light mb-4">Rates & Info</h4>
+                    <ul class="text-xs text-cream-muted space-y-2">
+                        <li class="flex justify-between"><span>KTV Room:</span> <span class="text-cream">₱600 / Hour</span></li>
+                        <li class="flex justify-between"><span>Reservation Deposit:</span> <span class="text-copper-light">₱0 (Free)</span></li>
+                        <li class="flex justify-between"><span>Billiards Table:</span> <span class="text-cream">Free Access</span></li>
+                        <li class="flex justify-between"><span>Staff Support:</span> <span>5 Dedicated Staff</span></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="text-xs font-semibold uppercase tracking-widest text-copper-light">Stay Updated</h4>
+                    <p class="text-xs text-cream-muted">Subscribe for event updates and new menu launches.</p>
+                    <form id="newsletter-form" class="space-y-2">
+                        <input type="email" placeholder="Enter your email" required class="w-full bg-charcoal-light border border-charcoal-border rounded-sm px-3 py-2 text-xs text-cream focus:outline-none focus:border-copper">
+                        <button type="submit" class="w-full py-2 bg-copper/20 border border-copper text-copper-light hover:bg-copper hover:text-white transition-all text-xs uppercase tracking-wider font-semibold rounded-sm">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-charcoal-border/50 text-center text-[11px] text-cream-muted flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p>&copy; 2026 Estcom Resto & Bar. All rights reserved.</p>
+                <div class="space-x-4">
+                    <a href="#" class="hover:underline">Privacy Policy</a>
+                    <a href="#" class="hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ADD REVIEW MODAL -->
+    <div id="reviewModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[80] hidden flex items-center justify-center p-4">
+        <div class="bg-charcoal w-full max-w-lg p-6 sm:p-8 rounded-sm border border-copper/50 shadow-2xl relative text-cream">
+            <button onclick="closeReviewModal()" class="absolute top-4 right-4 text-cream-muted hover:text-cream text-xl font-bold">&times;</button>
+            <h3 class="font-serif text-2xl text-copper-light text-center mb-1">Leave a Review</h3>
+            <p class="text-xs text-cream-muted text-center mb-6">Share your dining experience at Estcom Resto & Bar</p>
+
+            <form id="add-review-form" class="space-y-4 text-left">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Your Name</label>
+                        <input type="text" id="rev-author" placeholder="e.g. Maria Santos" required class="w-full bg-charcoal-light border border-charcoal-border rounded-sm p-2.5 text-xs text-cream focus:outline-none focus:border-copper">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Title / Designation</label>
+                        <input type="text" id="rev-role" placeholder="e.g. Food Lover / Local Guide" required class="w-full bg-charcoal-light border border-charcoal-border rounded-sm p-2.5 text-xs text-cream focus:outline-none focus:border-copper">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Rating</label>
+                    <select id="rev-stars" class="w-full bg-charcoal-light border border-charcoal-border rounded-sm p-2.5 text-xs text-copper-light focus:outline-none focus:border-copper">
+                        <option value="5">★★★★★ (5 Stars - Exceptional)</option>
+                        <option value="4">★★★★☆ (4 Stars - Very Good)</option>
+                        <option value="3">★★★☆☆ (3 Stars - Average)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Your Feedback</label>
+                    <textarea id="rev-quote" rows="3" placeholder="Tell us about your meal, atmosphere, or service..." required class="w-full bg-charcoal-light border border-charcoal-border rounded-sm p-2.5 text-xs text-cream focus:outline-none focus:border-copper"></textarea>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeReviewModal()" class="w-1/2 bg-charcoal-light text-cream-muted py-3 rounded-sm hover:bg-zinc-800 transition text-xs uppercase tracking-wider">Cancel</button>
+                    <button type="submit" class="w-1/2 bg-copper hover:bg-red-700 text-white font-semibold py-3 rounded-sm transition text-xs uppercase tracking-wider">Submit Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<!-- MAP MODAL -->
+    <div id="map-modal" class="fixed inset-0 z-[80] bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-charcoal p-6 max-w-3xl w-full rounded-2xl space-y-4 border border-copper/50 text-cream shadow-2xl relative gold-border-glow">
+            <div class="flex justify-between items-center border-b border-charcoal-border pb-3">
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-cream">Estcom Resto & Bar</h3>
+                    <p class="text-xs text-cream-muted">Cosico Avenue, Del Remedio, San Pablo City, Philippines, 4000</p>
+                </div>
+                <button onclick="closeMapModal()" class="text-cream-muted hover:text-white text-2xl font-bold p-1">&times;</button>
+            </div>
+            
+            <div class="w-full h-96 rounded-xl overflow-hidden border border-charcoal-border bg-charcoal-light relative">
+                <iframe 
+                    id="estcom-map-frame"
+                    class="w-full h-full border-0" 
+                    src="https://maps.google.com/maps?q=Cosico%20Avenue,%20Del%20Remedio,%20San%20Pablo%20City,%20Laguna&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2">
+                <span class="text-xs text-cream-muted"><i class="fa-solid fa-circle-info text-copper-light mr-1"></i> Interactive map: drag, zoom, or navigate directly.</span>
+                <a href="https://www.google.com/maps/search/?api=1&query=Cosico+Avenue+Del+Remedio+San+Pablo+City+Laguna" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-copper hover:bg-red-700 text-white font-semibold text-xs uppercase tracking-widest rounded-sm transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-diamond-turn-right"></i>
+                    <span>Open in Google Maps</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART SIDE DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div id="cart-backdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-charcoal border-l border-charcoal-border shadow-2xl flex flex-col">
+                <div class="p-6 border-b border-charcoal-border flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-utensils text-copper-light"></i>
+                        <h3 class="font-serif text-xl text-cream">Your Pre-Order Selection</h3>
+                    </div>
+                    <button id="close-cart-btn" class="text-cream-muted hover:text-cream p-2">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+                <div class="p-6 border-t border-charcoal-border bg-charcoal-light space-y-4">
+                    <div class="flex justify-between text-cream font-semibold text-base border-t border-charcoal-border pt-2">
+                        <span>Estimated Total</span>
+                        <span id="cart-total" class="text-copper-light">₱0.00</span>
+                    </div>
+                    <button id="checkout-btn" onclick="openCheckoutModal()" class="w-full py-3.5 bg-copper hover:bg-red-700 text-white font-semibold text-xs uppercase tracking-widest rounded-sm transition-all shadow-md">
+                        Proceed to Order Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-charcoal w-full max-w-lg p-6 rounded-xl border border-charcoal-border shadow-2xl relative text-cream">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-cream-muted hover:text-cream text-xl font-bold">&times;</button>
+            <h3 class="text-2xl font-serif text-copper-light text-center mb-1">Order Details</h3>
+            <p class="text-xs text-cream-muted text-center mb-4">Choose order type, payment method, and complete your details</p>
+            
+            <form id="orderForm" class="space-y-3 text-left">
+                <div>
+                    <label class="block text-xs text-cream-muted mb-1 font-semibold uppercase tracking-wider">ORDER TYPE</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center space-x-2 border border-charcoal-border p-2.5 rounded-lg cursor-pointer bg-charcoal-light hover:border-copper">
+                            <input type="radio" name="orderType" value="Advanced Dine-in Order" checked class="accent-copper">
+                            <span class="text-xs text-cream font-medium">Advance Dine-in</span>
+                        </label>
+                        <label class="flex items-center space-x-2 border border-charcoal-border p-2.5 rounded-lg cursor-pointer bg-charcoal-light hover:border-copper">
+                            <input type="radio" name="orderType" value="Delivery Order" class="accent-copper">
+                            <span class="text-xs text-cream font-medium">Delivery Order</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-cream-muted mb-1 font-semibold uppercase tracking-wider">PAYMENT METHOD</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <label class="flex items-center space-x-1.5 border border-charcoal-border p-2 rounded-lg cursor-pointer bg-charcoal-light hover:border-copper">
+                            <input type="radio" name="paymentMethod" value="GCash" checked class="accent-copper">
+                            <span class="text-xs text-cream font-medium"><i class="fa-solid fa-mobile-screen text-blue-400 mr-1"></i> GCash</span>
+                        </label>
+                        <label class="flex items-center space-x-1.5 border border-charcoal-border p-2 rounded-lg cursor-pointer bg-charcoal-light hover:border-copper">
+                            <input type="radio" name="paymentMethod" value="Credit / Debit Card" class="accent-copper">
+                            <span class="text-xs text-cream font-medium"><i class="fa-solid fa-credit-card text-yellow-400 mr-1"></i> Card</span>
+                        </label>
+                        <label class="flex items-center space-x-1.5 border border-charcoal-border p-2 rounded-lg cursor-pointer bg-charcoal-light hover:border-copper">
+                            <input type="radio" name="paymentMethod" value="Cash" class="accent-copper">
+                            <span class="text-xs text-cream font-medium"><i class="fa-solid fa-money-bill-wave text-green-400 mr-1"></i> Cash</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-cream-muted mb-1">FULL NAME</label>
+                    <input type="text" id="custName" required class="w-full bg-charcoal-light border border-charcoal-border rounded p-2.5 text-sm text-cream focus:outline-none focus:border-copper">
+                </div>
+                <div>
+                    <label class="block text-xs text-cream-muted mb-1">PHONE NUMBER</label>
+                    <input type="tel" id="custPhone" required class="w-full bg-charcoal-light border border-charcoal-border rounded p-2.5 text-sm text-cream focus:outline-none focus:border-copper">
+                </div>
+                <div>
+                    <label class="block text-xs text-cream-muted mb-1">DELIVERY ADDRESS / NOTES</label>
+                    <textarea id="custAddress" required rows="2" class="w-full bg-charcoal-light border border-charcoal-border rounded p-2.5 text-sm text-cream focus:outline-none focus:border-copper"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs text-cream-muted mb-1">SELECTED DISHES</label>
+                    <input type="text" id="custItems" readonly class="w-full bg-zinc-800 border border-charcoal-border rounded p-2 text-sm text-cream-muted focus:outline-none cursor-not-allowed">
+                </div>
+                <div>
+                    <label class="block text-xs text-cream-muted mb-1">TOTAL AMOUNT (₱)</label>
+                    <input type="text" id="custTotal" readonly class="w-full bg-zinc-800 border border-charcoal-border rounded p-2 text-sm text-copper-light font-bold focus:outline-none cursor-not-allowed">
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeCheckoutModal()" class="w-1/2 bg-zinc-800 text-cream-muted py-2.5 rounded hover:bg-zinc-700 transition text-sm">Cancel</button>
+                    <button type="submit" class="w-1/2 bg-copper text-white font-semibold py-2.5 rounded hover:bg-red-700 transition text-sm uppercase">Submit & View Receipt</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PRINTABLE RECEIPT MODAL -->
+    <div id="receiptModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
+        <div id="receiptCard" class="bg-white text-black w-full max-w-md p-6 rounded-lg shadow-2xl font-mono text-sm relative">
+            <div class="text-center border-b border-dashed border-gray-400 pb-3 mb-3">
+                <h2 class="text-xl font-bold font-serif">ESTCOM RESTO & BAR</h2>
+                <p class="text-xs text-gray-600">San Pablo City • Official Order Receipt</p>
+                <p class="text-xs text-gray-500 mt-1" id="receiptDate"></p>
+            </div>
+            <div class="text-xs space-y-1 mb-3 border-b border-dashed border-gray-400 pb-3">
+                <p><strong>Order ID:</strong> #<span id="recOrderId"></span></p>
+                <p><strong>Order Type:</strong> <span id="recOrderType" class="font-bold text-red-600"></span></p>
+                <p><strong>Payment Method:</strong> <span id="recPaymentMethod" class="font-bold text-blue-600"></span></p>
+                <p><strong>Customer:</strong> <span id="recName"></span></p>
+                <p><strong>Phone:</strong> <span id="recPhone"></span></p>
+                <p><strong>Details:</strong> <span id="recAddress"></span></p>
+            </div>
+            <div class="mb-3 border-b border-dashed border-gray-400 pb-3">
+                <p class="font-bold mb-1">ITEMS PURCHASED:</p>
+                <div id="recItemsList" class="text-xs space-y-1 text-gray-800"></div>
+            </div>
+            <div class="flex justify-between font-bold text-base border-b border-gray-400 pb-2 mb-4">
+                <span>TOTAL PAID:</span>
+                <span id="recTotal"></span>
+            </div>
+            <div class="flex gap-2 no-print">
+                <button onclick="window.print()" class="w-1/2 bg-gray-800 text-white py-2 rounded text-xs hover:bg-black transition flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-print"></i> Print Receipt
+                </button>
+                <button onclick="closeReceiptModal()" class="w-1/2 bg-red-600 text-white font-bold py-2 rounded text-xs hover:bg-red-700 transition">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-charcoal-card border border-copper text-cream px-6 py-4 rounded-sm shadow-2xl flex items-center space-x-3 transition-all duration-300 transform translate-y-20 opacity-0">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-copper-light text-lg"></i>
+        <span id="toast-message" class="text-xs uppercase tracking-wider font-medium">Item updated</span>
+    </div>
+
+   <!-- ACCURATE JAVASCRIPT MENU DATA & LIVE SYNC -->
+    <script>
+        const unifiedMenuData = {
+            beverages: [
+                { id: 1, name: "Choco Bliss (Hot)", desc: "Rich premium cocoa blended with creamy milk.", img: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?q=80&w=400&auto=format&fit=crop", ingredients: ["Cocoa Blend", "Hot Milk", "Chocolate Drizzle"], variants: [{ label: "16 oz", price: 85 }, { label: "22 oz", price: 110 }] },
+                { id: 2, name: "Matcha Latte (Hot)", desc: "Authentic Japanese green tea whisked with rich steamed milk.", img: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=400&auto=format&fit=crop", ingredients: ["Japanese Matcha", "Steamed Milk", "Velvet Foam"], variants: [{ label: "16 oz", price: 110 }, { label: "22 oz", price: 130 }] },
+                { id: 3, name: "Caramel Macchiato (Hot)", desc: "Smooth espresso layered with vanilla syrup, hot milk, and caramel drizzle.", img: "https://images.unsplash.com/photo-1485808191679-5f86510681a2?q=80&w=400&auto=format&fit=crop", ingredients: ["Vanilla Syrup", "Espresso", "Steamed Milk", "Caramel Drizzle"], variants: [{ label: "16 oz", price: 110 }, { label: "22 oz", price: 130 }] },
+                { id: 4, name: "Cappuccino (Hot)", desc: "Classic espresso with steamed milk and a thick layer of foam.", img: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=400&auto=format&fit=crop", ingredients: ["Espresso Shot", "Steamed Milk", "Deep Milk Foam"], variants: [{ label: "16 oz", price: 110 }, { label: "22 oz", price: 130 }] },
+                { id: 5, name: "Mocha (Hot)", desc: "Espresso mixed with dark chocolate and velvety steamed milk.", img: "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?q=80&w=400&auto=format&fit=crop", ingredients: ["Espresso", "Chocolate Syrup", "Steamed Milk"], variants: [{ label: "16 oz", price: 100 }, { label: "22 oz", price: 120 }] },
+                { id: 6, name: "Spanish Latte (Hot)", desc: "Rich espresso combined with sweetened condensed milk and fresh milk.", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=400&auto=format&fit=crop", ingredients: ["Espresso", "Condensed Milk", "Fresh Milk"], variants: [{ label: "16 oz", price: 110 }, { label: "22 oz", price: 120 }] },
+                { id: 7, name: "Spanish Latte (Cold)", desc: "Iced espresso combined with sweetened condensed milk and fresh milk.", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=400&auto=format&fit=crop", ingredients: ["Espresso", "Condensed Milk", "Fresh Milk", "Ice"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 130 }] },
+                { id: 8, name: "Matcha Latte (Cold)", desc: "Iced Japanese green tea whisked with creamy milk.", img: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=400&auto=format&fit=crop", ingredients: ["Matcha", "Fresh Milk", "Ice"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 130 }] },
+                { id: 9, name: "Iced Mocha", desc: "Chilled espresso with rich chocolate sauce and cold milk over ice.", img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=400&auto=format&fit=crop", ingredients: ["Espresso", "Chocolate", "Milk", "Ice"], variants: [{ label: "16 oz", price: 110 }, { label: "22 oz", price: 130 }] },
+                { id: 10, name: "Caramel Macchiato (Cold)", desc: "Iced espresso layered with vanilla, milk, and sweet caramel drizzle.", img: "https://images.unsplash.com/photo-1485808191679-5f86510681a2?q=80&w=400&auto=format&fit=crop", ingredients: ["Espresso", "Vanilla", "Milk", "Caramel Drizzle", "Ice"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 130 }] },
+                { id: 11, name: "Biscoff Crunch (Cold)", desc: "Decadent iced drink infused with Lotus Biscoff cookie spread.", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=400&auto=format&fit=crop", ingredients: ["Biscoff Spread", "Milk", "Biscoff Crumbles", "Ice"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 140 }] },
+                { id: 12, name: "Iced Choco", desc: "Refreshingly cold premium chocolate drink.", img: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?q=80&w=400&auto=format&fit=crop", ingredients: ["Chocolate Blend", "Cold Milk", "Ice"], variants: [{ label: "16 oz", price: 100 }, { label: "22 oz", price: 120 }] },
+                { id: 13, name: "Iced Nutella", desc: "Creamy iced milk blended with rich Nutella hazelnut spread.", img: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?q=80&w=400&auto=format&fit=crop", ingredients: ["Nutella Spread", "Fresh Milk", "Ice"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 140 }] },
+                { id: 14, name: "Strawberry Matcha", desc: "Layered iced strawberry puree topped with whisked Japanese matcha.", img: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=400&auto=format&fit=crop", ingredients: ["Strawberry Puree", "Matcha", "Milk", "Ice"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 145 }] },
+                { id: 15, name: "Matcha Biscoff Cream Latte", desc: "Matcha latte combined with Biscoff cream and biscuit crunch.", img: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=400&auto=format&fit=crop", ingredients: ["Matcha", "Biscoff Cream", "Milk", "Ice"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 145 }] },
+                { id: 16, name: "Iced Strawberry Milk", desc: "Sweet strawberry reduction mixed with cold creamy milk.", img: "https://images.unsplash.com/photo-1579954115545-aad50765025d?q=80&w=400&auto=format&fit=crop", ingredients: ["Strawberry Base", "Fresh Milk", "Ice"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 130 }] },
+                { id: 17, name: "Java Chip Frappe", desc: "Blended coffee frappe with chocolate chips and whipped cream.", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=400&auto=format&fit=crop", ingredients: ["Blended Coffee", "Java Chips", "Whipped Cream"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 140 }] },
+                { id: 18, name: "Cookies and Cream Frappe", desc: "Creamy crushed Oreo cookie frappe topped with whipped cream.", img: "https://images.unsplash.com/photo-1579954115545-aad50765025d?q=80&w=400&auto=format&fit=crop", ingredients: ["Oreo Cookies", "Milk Base", "Whipped Cream"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 140 }] },
+                { id: 19, name: "Strawberries and Cream Frappe", desc: "Sweet blended strawberry cream frappe topped with whipped cream.", img: "https://images.unsplash.com/photo-1579954115545-aad50765025d?q=80&w=400&auto=format&fit=crop", ingredients: ["Strawberry Base", "Cream", "Whipped Cream"], variants: [{ label: "16 oz", price: 110 }, { label: "22 oz", price: 130 }] },
+                { id: 20, name: "Biscoff Cream Crunch Frappe", desc: "Blended Lotus Biscoff frappe with crunchy cookie toppings.", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=400&auto=format&fit=crop", ingredients: ["Biscoff Spread", "Cookie Crunch", "Whipped Cream"], variants: [{ label: "16 oz", price: 120 }, { label: "22 oz", price: 140 }] }
+            ],
+            appetizers: [
+                { id: 101, name: "Nachos Supreme", desc: "Crispy tortilla chips topped with cheese sauce, shredded cheese, and fresh vegetable salsa.", img: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?q=80&w=400&auto=format&fit=crop", ingredients: ["Tortilla Chips", "Cheese Sauce", "Salsa"], variants: [{ label: "Regular Platter", price: 210 }] },
+                { id: 102, name: "Loaded Fries (w/ Bacon & Cheese)", desc: "Crispy fries loaded with cheese sauce, savory bacon bits, and shredded cheese.", img: "https://images.unsplash.com/photo-1585109649139-366815a0d713?q=80&w=400&auto=format&fit=crop", ingredients: ["French Fries", "Bacon Bits", "Cheese Sauce"], variants: [{ label: "Regular Basket", price: 210 }] },
+                { id: 103, name: "Mojos", desc: "Seasoned and golden breaded potato rounds served hot with dip.", img: "https://images.unsplash.com/photo-1518013038567-0c1598f121d5?q=80&w=400&auto=format&fit=crop", ingredients: ["Potato Rounds", "Estcom Spices", "Garlic Dip"], variants: [{ label: "Regular Basket", price: 150 }] },
+                { id: 104, name: "Cheese Sticks", desc: "Golden fried cheese rolls served crisp with dipping sauce.", img: "https://images.unsplash.com/photo-1531749668029-2db88e4276c7?q=80&w=400&auto=format&fit=crop", ingredients: ["Cheese", "Crispy Wrapper", "Dip"], variants: [{ label: "1 Serving", price: 150 }] },
+                { id: 105, name: "Kamote Fries", desc: "Sweet potato fries fried to crispy perfection.", img: "https://images.unsplash.com/photo-1585109649139-366815a0d713?q=80&w=400&auto=format&fit=crop", ingredients: ["Sweet Potato", "Special Dip"], variants: [{ label: "Regular Basket", price: 135 }] },
+                { id: 106, name: "Chicken Tenders w/ Fries & Mojos", desc: "Juicy chicken tenders served alongside french fries and mojos.", img: "https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=400&auto=format&fit=crop", ingredients: ["Chicken Tenders", "Fries", "Mojos", "Dip"], variants: [{ label: "Combo Basket", price: 240 }] },
+                { id: 107, name: "Crispy Enoki Mushroom", desc: "Deep-fried enoki mushrooms with signature seasoning.", img: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?q=80&w=400&auto=format&fit=crop", ingredients: ["Enoki Mushroom", "Crispy Batter", "Dip"], variants: [{ label: "1 Serving", price: 150 }] }
+            ],
+            sandwiches: [
+                { id: 301, name: "Monte Cristo (Served with Fries)", desc: "Golden fried French toast filled with ham and melted cheese.", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?q=80&w=400&auto=format&fit=crop", ingredients: ["French Toast", "Ham", "Cheese", "Fries"], variants: [{ label: "Whole Sandwich", price: 225 }] },
+                { id: 302, name: "Estcom Spicy Chicken Burger (Served with Fries)", desc: "Crispy spicy chicken patty topped with fresh lettuce and sauce.", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=400&auto=format&fit=crop", ingredients: ["Spicy Chicken Patty", "Burger Bun", "Fries"], variants: [{ label: "Single Burger", price: 195 }] },
+                { id: 303, name: "Clubhouse Sandwich (Served with Fries)", desc: "Triple-decker sandwich packed with chicken, ham, egg, and cheese.", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?q=80&w=400&auto=format&fit=crop", ingredients: ["Toast Bread", "Chicken", "Ham", "Egg", "Fries"], variants: [{ label: "Full Clubhouse", price: 250 }] }
+            ],
+            riceBowls: [
+                { id: 401, name: "Pork Adobo Rice Bowl", desc: "Classic tender pork adobo over warm steamed rice.", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400&auto=format&fit=crop", ingredients: ["Pork Adobo", "Rice"], variants: [{ label: "Bowl", price: 180 }] },
+                { id: 402, name: "Oyakudon", desc: "Japanese chicken and egg simmered in savory soy broth over rice.", img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=400&auto=format&fit=crop", ingredients: ["Chicken", "Egg", "Rice Bowl"], variants: [{ label: "Bowl", price: 170 }] },
+                { id: 403, name: "Katsudon", desc: "Crispy breaded pork cutlet cooked with egg and sweet onion soy glaze over rice.", img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=400&auto=format&fit=crop", ingredients: ["Breaded Pork Cutlet", "Egg", "Rice"], variants: [{ label: "Bowl", price: 180 }] },
+                { id: 404, name: "Katsu Curry", desc: "Crispy katsu served with rich Japanese curry sauce over rice.", img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=400&auto=format&fit=crop", ingredients: ["Katsu Cutlet", "Japanese Curry", "Rice"], variants: [{ label: "Bowl", price: 190 }] },
+                { id: 405, name: "Tonkatsu", desc: "Classic Japanese deep-fried pork cutlet served with rice.", img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=400&auto=format&fit=crop", ingredients: ["Tonkatsu Cutlet", "Steamed Rice"], variants: [{ label: "Bowl", price: 180 }] },
+                { id: 406, name: "Chicken Katsu", desc: "Crispy breaded chicken cutlet with savory sauce over rice.", img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=400&auto=format&fit=crop", ingredients: ["Chicken Katsu", "Steamed Rice"], variants: [{ label: "Bowl", price: 170 }] },
+                { id: 407, name: "Beef Mongolian", desc: "Savory stir-fried beef with Mongolian sauce over steamed rice.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop", ingredients: ["Beef Strips", "Mongolian Sauce", "Rice"], variants: [{ label: "Bowl", price: 200 }] },
+                { id: 408, name: "Sisig Rice Bowl", desc: "Sizzling pork sisig served over rice.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop", ingredients: ["Pork Sisig", "Steamed Rice"], variants: [{ label: "Bowl", price: 160 }] }
+            ],
+            pasta: [
+                { id: 201, name: "Penne Arrabbiata", desc: "Spicy zesty marinara penne pasta.", img: "https://images.unsplash.com/photo-1621996346565-e3d5d6281894?q=80&w=400&auto=format&fit=crop", ingredients: ["Penne Pasta", "Spicy Sauce"], variants: [{ label: "1 Serving", price: 200 }] },
+                { id: 202, name: "Carbonara", desc: "Rich and creamy fettuccine with bacon and parmesan.", img: "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=400&auto=format&fit=crop", ingredients: ["Fettuccine", "Cream Sauce", "Bacon"], variants: [{ label: "1 Serving", price: 210 }] },
+                { id: 203, name: "Aglio Olio with Shrimp", desc: "Garlic and olive oil pasta tossed with juicy shrimp.", img: "https://images.unsplash.com/photo-1621996346565-e3d5d6281894?q=80&w=400&auto=format&fit=crop", ingredients: ["Pasta", "Shrimp", "Garlic", "Olive Oil"], variants: [{ label: "1 Serving", price: 190 }] },
+                { id: 204, name: "Meatball Spaghetti", desc: "Classic spaghetti with savory meatballs in marinara sauce.", img: "https://images.unsplash.com/photo-1621996346565-e3d5d6281894?q=80&w=400&auto=format&fit=crop", ingredients: ["Spaghetti", "Meatballs", "Tomato Sauce"], variants: [{ label: "1 Serving", price: 200 }] }
+            ],
+            mainDishes: [
+                { id: 501, name: "Beef Salpicao", desc: "Tender beef stir-fried with sautéed garlic and soy glaze.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop", ingredients: ["Beef Cubes", "Garlic", "Soy Glaze"], variants: [{ label: "Platter", price: 320 }] },
+                { id: 502, name: "Glazed Lemon Chicken", desc: "Crispy chicken glazed in zesty lemon sauce.", img: "https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=400&auto=format&fit=crop", ingredients: ["Chicken", "Lemon Glaze"], variants: [{ label: "Platter", price: 320 }] },
+                { id: 503, name: "Spicy Spare Ribs", desc: "Tender pork spare ribs cooked in spicy savory glaze.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop", ingredients: ["Pork Ribs", "Spicy Sauce"], variants: [{ label: "Platter", price: 310 }] },
+                { id: 504, name: "Buttered Garlic Chicken", desc: "Juicy chicken tossed in butter and rich garlic.", img: "https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=400&auto=format&fit=crop", ingredients: ["Chicken", "Butter", "Garlic"], variants: [{ label: "Platter", price: 320 }] },
+                { id: 505, name: "Herb Roasted Salmon", desc: "Fresh salmon roasted with aromatic herbs.", img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=400&auto=format&fit=crop", ingredients: ["Salmon Fillet", "Herbs"], variants: [{ label: "Serving", price: 350 }] },
+                { id: 506, name: "Pork Caldereta", desc: "Rich and hearty Filipino pork stew in tomato liver sauce.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop", ingredients: ["Pork", "Caldereta Sauce"], variants: [{ label: "Platter", price: 310 }] },
+                { id: 507, name: "Liempo BBQ", desc: "Grilled marinated pork belly served with dipping sauce.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop", ingredients: ["Pork Liempo", "BBQ Marinade"], variants: [{ label: "Platter", price: 310 }] },
+                { id: 508, name: "Lechon Kawali", desc: "Deep-fried crispy pork belly served with lechon sauce.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop", ingredients: ["Crispy Pork", "Lechon Sauce"], variants: [{ label: "Platter", price: 310 }] },
+                { id: 509, name: "Bicol Express", desc: "Pork cooked in rich coconut milk and spicy green chilies.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop", ingredients: ["Pork", "Coconut Milk", "Chilies"], variants: [{ label: "Platter", price: 290 }] },
+                { id: 510, name: "Crispy Pata", desc: "Deep-fried pork leg cooked to maximum crispiness.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop", ingredients: ["Whole Pork Knuckle", "Special Vinegar Dip"], variants: [{ label: "Medium Size", price: 750 }, { label: "Large Size", price: 820 }] }
+            ],
+            pizza: [
+                { id: 601, name: "Sisig Pizza", desc: "Crispy pizza topped with savory pork sisig and melted cheese.", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=400&auto=format&fit=crop", ingredients: ["Pork Sisig", "Mozzarella Cheese"], variants: [{ label: "Whole Pizza", price: 300 }] },
+                { id: 602, name: "Hawaiian Pizza", desc: "Classic pizza topped with ham, pineapple, and cheese.", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=400&auto=format&fit=crop", ingredients: ["Ham", "Pineapple", "Mozzarella"], variants: [{ label: "Whole Pizza", price: 310 }] },
+                { id: 603, name: "Creamy Spinach and Mushroom Pizza", desc: "Creamy white sauce pizza with fresh spinach and mushrooms.", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=400&auto=format&fit=crop", ingredients: ["Creamy Spinach", "Mushrooms", "Cheese"], variants: [{ label: "Whole Pizza", price: 330 }] }
+            ],
+            breakfast: [
+                { id: 701, name: "Tapsilog", desc: "Beef tapa served with garlic fried rice and egg.", img: "https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?q=80&w=400&auto=format&fit=crop", ingredients: ["Beef Tapa", "Garlic Rice", "Egg"], variants: [{ label: "Classic Meal", price: 180 }] },
+                { id: 702, name: "Porksilog", desc: "Marinated pork chop served with garlic fried rice and egg.", img: "https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?q=80&w=400&auto=format&fit=crop", ingredients: ["Pork Chop", "Garlic Rice", "Egg"], variants: [{ label: "Classic Meal", price: 180 }] },
+                { id: 703, name: "Chicksilog", desc: "Fried chicken served with garlic fried rice and egg.", img: "https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?q=80&w=400&auto=format&fit=crop", ingredients: ["Fried Chicken", "Garlic Rice", "Egg"], variants: [{ label: "Classic Meal", price: 175 }] },
+                { id: 704, name: "Shanghai Silog", desc: "Lumpiang shanghai served with garlic fried rice and egg.", img: "https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?q=80&w=400&auto=format&fit=crop", ingredients: ["Shanghai Rolls", "Garlic Rice", "Egg"], variants: [{ label: "Classic Meal", price: 150 }] },
+                { id: 705, name: "Bangusilog", desc: "Pan-fried bangus served with garlic fried rice and egg.", img: "https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?q=80&w=400&auto=format&fit=crop", ingredients: ["Fried Bangus", "Garlic Rice", "Egg"], variants: [{ label: "Classic Meal", price: 160 }] }
+            ]
+        };
+
+        const reviewsData = [
+            { quote: "Great tambayan! The Sisig Pizza and Beef Salpicao are unbeatable, and having private KTV plus free billiards makes it the best spot in San Pablo.", author: "Marco De Silva", role: "Local Guide & Foodie", stars: 5 },
+            { quote: "Awesome atmosphere! Edmon and the 5 staff members are super accommodating. Loved the Iced Spanish Latte and Loaded Fries.", author: "Samantha Cruz", role: "Regular Guest", stars: 5 },
+            { quote: "The private KTV room for ₱600/hr was worth every peso. Clean room, delicious food, and crisp sound system!", author: "Kevin Tan", role: "Birthday Celebrant", stars: 5 }
+        ];
+
+        let currentSubCategory = 'all';
+        let cart = JSON.parse(localStorage.getItem('estcom_temp_cart')) || [];
+        let selectedDish = null;
+        let selectedVariant = null;
+        let currentReviewIndex = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkUserSession();
+            prefillReservationForm();
+            renderMenuItems();
+            updateCartUI();
+            setupCartListeners();
+            setupReservationForm();
+            loadDatabaseReviews();
+            setupMobileMenu();
+            setDefaultDate();
+            setupOrderFormListener();
+        });
+
+        async function checkUserSession() {
+            const role = localStorage.getItem('estcom_user_role');
+            const username = localStorage.getItem('estcom_username');
+            const authLink = document.getElementById('auth-nav-link');
+            const authLabel = document.getElementById('auth-btn-label');
+            const logoutBtn = document.getElementById('logout-btn');
+            const mobileLoginLink = document.getElementById('mobile-login-link');
+            const activeOrderDot = document.getElementById('active-order-dot');
+
+            if (role === 'staff') {
+                window.location.href = 'admin.html';
+            } else if (role === 'customer' && username) {
+                if (authLink) {
+                    authLink.href = '#';
+                    authLink.onclick = (e) => { e.preventDefault(); openProfileModal('orders'); };
+                }
+                if (authLabel) authLabel.innerText = username.split(' ')[0];
+                if (logoutBtn) logoutBtn.classList.remove('hidden');
+                if (mobileLoginLink) {
+                    mobileLoginLink.href = '#';
+                    mobileLoginLink.onclick = (e) => { e.preventDefault(); document.getElementById('mobile-menu').classList.add('hidden'); openProfileModal('orders'); };
+                    mobileLoginLink.innerHTML = `<i class="fa-solid fa-bag-shopping mr-2"></i>My Profile & Bookings (${username.split(' ')[0]})`;
+                }
+
+                try {
+                    const [ordRes, bookRes] = await Promise.all([
+                        fetch('api.php?action=get_orders'),
+                        fetch('api.php?action=get_reservations')
+                    ]);
+                    const allOrders = await ordRes.json();
+                    const allRes = await bookRes.json();
+                    const hasActiveOrder = allOrders.some(o => o.name && o.name.toLowerCase() === username.toLowerCase() && o.status !== 'Completed');
+                    const hasActiveRes = allRes.some(r => r.name && r.name.toLowerCase() === username.toLowerCase() && r.status !== 'Completed');
+                    if (activeOrderDot) {
+                        if (hasActiveOrder || hasActiveRes) activeOrderDot.classList.remove('hidden');
+                        else activeOrderDot.classList.add('hidden');
+                    }
+                } catch (err) {}
+            } else {
+                if (authLink) { authLink.href = 'login.html'; authLink.onclick = null; }
+                if (authLabel) authLabel.innerText = "Login";
+                if (logoutBtn) logoutBtn.classList.add('hidden');
+                if (activeOrderDot) activeOrderDot.classList.add('hidden');
+            }
+        }
+
+        function prefillReservationForm() {
+            const role = localStorage.getItem('estcom_user_role');
+            const username = localStorage.getItem('estcom_username');
+            const phone = localStorage.getItem('estcom_user_phone');
+            if (role === 'customer' && username) {
+                const nameInput = document.getElementById('res-name');
+                const phoneInput = document.getElementById('res-phone');
+                if (nameInput && !nameInput.value) nameInput.value = username;
+                if (phone && phoneInput && !phoneInput.value) phoneInput.value = phone;
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('estcom_user_role');
+            localStorage.removeItem('estcom_username');
+            localStorage.removeItem('estcom_user_phone');
+            localStorage.removeItem('estcom_user_email');
+            checkUserSession();
+            showToast('Logged out successfully');
+        }
+
+        function openProfileModal(defaultTab = 'orders') {
+            const role = localStorage.getItem('estcom_user_role');
+            const username = localStorage.getItem('estcom_username');
+            const phone = localStorage.getItem('estcom_user_phone') || '';
+            const email = localStorage.getItem('estcom_user_email') || '';
+            if (role !== 'customer' || !username) { window.location.href = 'login.html'; return; }
+
+            document.getElementById('profile-modal-name').innerText = username;
+            document.getElementById('profile-modal-contact').innerText = (email || phone) ? `${email} • ${phone}` : 'Registered Customer Account';
+            switchProfileSubTab(defaultTab);
+            document.getElementById('profileTrackerModal').classList.remove('hidden');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileTrackerModal').classList.add('hidden');
+            checkUserSession();
+        }
+
+        function switchProfileSubTab(tab) {
+            const ordersPanel = document.getElementById('customer-orders-container');
+            const resPanel = document.getElementById('customer-reservations-container');
+            const ordersBtn = document.getElementById('prof-tab-orders');
+            const resBtn = document.getElementById('prof-tab-reservations');
+
+            const activeCls = 'px-4 py-2.5 rounded-t-lg text-xs font-bold uppercase tracking-wider bg-copper text-white transition flex items-center gap-1.5';
+            const inactiveCls = 'px-4 py-2.5 rounded-t-lg text-xs font-bold uppercase tracking-wider text-cream-muted hover:text-white transition flex items-center gap-1.5';
+
+            if (tab === 'reservations') {
+                ordersPanel.classList.add('hidden');
+                resPanel.classList.remove('hidden');
+                ordersBtn.className = inactiveCls;
+                resBtn.className = activeCls;
+                renderCustomerReservations();
+            } else {
+                resPanel.classList.add('hidden');
+                ordersPanel.classList.remove('hidden');
+                resBtn.className = inactiveCls;
+                ordersBtn.className = activeCls;
+                renderCustomerOrders();
+            }
+        }
+
+        function refreshProfileTracker() {
+            renderCustomerOrders();
+            renderCustomerReservations();
+            showToast('Live status updated from database!');
+        }
+
+        function getTrackerStepIndex(status) {
+            const s = (status || '').toLowerCase().trim();
+            if (s === 'pending') return 0;
+            if (s === 'preparing' || s === 'approved') return 1;
+            if (s === 'on the way' || s === 'delivery is on the way' || s === 'ready') return 2;
+            if (s === 'completed' || s === 'delivered' || s === 'served') return 3;
+            return 0;
+        }
+
+        function getHumanReadableStatus(order) {
+            const isDelivery = (order.type || '').toLowerCase().includes('delivery');
+            const s = (order.status || '').toLowerCase().trim();
+            if (s === 'pending') return { title: 'Order Pending Approval', subtitle: 'Waiting for Estcom kitchen to confirm your order.', color: 'text-red-400', badge: 'bg-red-950 text-red-400 border-red-600' };
+            if (s === 'preparing' || s === 'approved') return { title: 'Approved & Preparing', subtitle: 'Our chefs are currently preparing your food!', color: 'text-amber-400', badge: 'bg-amber-950 text-amber-400 border-amber-600' };
+            if (s === 'on the way' || s === 'delivery is on the way' || s === 'ready') {
+                return isDelivery
+                    ? { title: 'Delivery is on the Way!', subtitle: 'Our rider is heading to your delivery address.', color: 'text-blue-400', badge: 'bg-blue-950 text-blue-400 border-blue-600' }
+                    : { title: 'Order Ready!', subtitle: 'Your food is freshly cooked and ready for serving/pickup.', color: 'text-blue-400', badge: 'bg-blue-950 text-blue-400 border-blue-600' };
+            }
+            return { title: isDelivery ? 'Delivered' : 'Served & Completed', subtitle: 'Thank you for dining with Estcom Resto & Bar!', color: 'text-emerald-400', badge: 'bg-emerald-950 text-emerald-400 border-emerald-600' };
+        }
+
+        async function renderCustomerOrders() {
+            const username = localStorage.getItem('estcom_username') || '';
+            const res = await fetch('api.php?action=get_orders');
+            const allOrders = await res.json();
+            const myOrders = allOrders.filter(o => o.name && o.name.toLowerCase() === username.toLowerCase());
+            const container = document.getElementById('customer-orders-container');
+
+            if (myOrders.length === 0) {
+                container.innerHTML = `<div class="bg-charcoal-light border border-charcoal-border rounded-xl p-10 text-center space-y-3"><h4 class="font-serif text-xl font-bold text-cream">No Orders Yet</h4><p class="text-xs text-cream-muted">Place an order from our menu and track its real-time status here!</p></div>`;
+                return;
+            }
+
+            container.innerHTML = myOrders.map(order => {
+                const isDelivery = (order.type || '').toLowerCase().includes('delivery');
+                const isPending = (order.status || '').toLowerCase() === 'pending';
+                const stepIdx = getTrackerStepIndex(order.status);
+                const statusInfo = getHumanReadableStatus(order);
+                const steps = [
+                    { label: 'Pending', icon: 'fa-clock' },
+                    { label: 'Preparing', icon: 'fa-fire-burner' },
+                    { label: isDelivery ? 'On the Way' : 'Ready', icon: isDelivery ? 'fa-motorcycle' : 'fa-bell-concierge' },
+                    { label: isDelivery ? 'Delivered' : 'Served', icon: 'fa-circle-check' }
+                ];
+
+                return `
+                <div class="bg-charcoal-light border border-charcoal-border rounded-xl p-5 space-y-5 shadow-lg">
+                    <div class="flex flex-wrap justify-between items-start gap-2 border-b border-charcoal-border pb-3">
+                        <div>
+                            <div class="flex items-center gap-2"><span class="font-mono text-xs font-bold text-copper-light">#${order.id}</span><span class="text-[11px] text-cream-muted">• ${order.type} (${order.pay})</span></div>
+                            <h4 class="font-bold text-base ${statusInfo.color} mt-1">${statusInfo.title}</h4>
+                            <p class="text-xs text-cream-muted">${statusInfo.subtitle}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider border ${statusInfo.badge}">${order.status}</span>
+                            ${isPending ? `<button onclick="cancelCustomerOrder(${order.db_id}, '${order.id}')" class="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-red-950/70 hover:bg-red-600 text-red-400 hover:text-white border border-red-600/50 transition" title="Cancel / Delete Order"><i class="fa-solid fa-trash mr-1"></i>Cancel</button>` : ''}
+                        </div>
+                    </div>
+                    <div class="relative pt-2 pb-1">
+                        <div class="grid grid-cols-4 gap-2 relative z-10">
+                            ${steps.map((s, i) => {
+                                const done = i <= stepIdx;
+                                const active = i === stepIdx && stepIdx < 3;
+                                return `<div class="flex flex-col items-center text-center"><div class="w-9 h-9 rounded-full flex items-center justify-center text-xs border-2 transition-all ${done ? 'bg-emerald-600 border-emerald-400 text-white shadow-md shadow-emerald-900/50' : 'bg-charcoal border-charcoal-border text-cream-muted'} ${active ? 'ring-4 ring-emerald-500/25 animate-pulse' : ''}"><i class="fa-solid ${s.icon}"></i></div><span class="text-[10px] font-semibold mt-1.5 ${done ? 'text-cream' : 'text-cream-muted'}">${s.label}</span></div>`;
+                            }).join('')}
+                        </div>
+                        <div class="absolute top-6 left-[12.5%] right-[12.5%] h-1 bg-charcoal-border z-0 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 transition-all duration-500" style="width: ${(stepIdx / 3) * 100}%"></div></div>
+                    </div>
+                    <div class="bg-charcoal border border-charcoal-border rounded-lg p-3.5 space-y-2">
+                        <div class="text-xs text-cream-muted space-y-1">${(order.items || []).map(item => `<p class="flex items-center gap-2"><i class="fa-solid fa-utensils text-[9px] text-copper-light"></i> ${item}</p>`).join('')}</div>
+                        ${order.address ? `<p class="text-[11px] text-cream-muted/80 pt-2 border-t border-charcoal-border/60"><strong>Address/Notes:</strong> ${order.address}</p>` : ''}
+                        <div class="flex justify-between items-center pt-2 border-t border-charcoal-border text-xs font-bold"><span class="text-cream-muted">Total Amount:</span><span class="font-mono text-sm text-emerald-400">₱${parseFloat(order.total).toFixed(2)}</span></div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function cancelCustomerOrder(db_id, orderCode) {
+            if (!confirm(`Are you sure you want to cancel and delete order #${orderCode}?`)) return;
+            await fetch('api.php?action=delete_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ db_id })
+            });
+            showToast(`Order #${orderCode} cancelled and removed.`);
+            renderCustomerOrders();
+            checkUserSession();
+        }
+
+        function getReservationStepIndex(status) {
+            const s = (status || '').toLowerCase().trim();
+            if (s === 'pending') return 0;
+            if (s === 'confirmed' || s === 'approved') return 1;
+            if (s === 'checked-in' || s === 'in progress') return 2;
+            if (s === 'completed') return 3;
+            return 0;
+        }
+
+        function getReservationStatusInfo(res) {
+            const s = (res.status || '').toLowerCase().trim();
+            if (s === 'pending') return { title: 'Reservation Pending Approval', subtitle: 'Waiting for Estcom staff to confirm your table/KTV schedule.', color: 'text-red-400', badge: 'bg-red-950 text-red-400 border-red-600' };
+            if (s === 'confirmed' || s === 'approved') return { title: 'Reservation Confirmed!', subtitle: `Your ${res.type} is reserved for ${res.date} at ${res.time}.`, color: 'text-amber-400', badge: 'bg-amber-950 text-amber-400 border-amber-600' };
+            if (s === 'checked-in') return { title: 'Checked-In & Enjoying!', subtitle: 'Welcome to Estcom Resto & Bar! Have a great time.', color: 'text-blue-400', badge: 'bg-blue-950 text-blue-400 border-blue-600' };
+            return { title: 'Booking Completed', subtitle: 'Thank you for visiting Estcom Resto & Bar!', color: 'text-emerald-400', badge: 'bg-emerald-950 text-emerald-400 border-emerald-600' };
+        }
+
+        async function renderCustomerReservations() {
+            const username = localStorage.getItem('estcom_username') || '';
+            const res = await fetch('api.php?action=get_reservations');
+            const allRes = await res.json();
+            const myRes = allRes.filter(r => r.name && r.name.toLowerCase() === username.toLowerCase());
+            const container = document.getElementById('customer-reservations-container');
+
+            if (myRes.length === 0) {
+                container.innerHTML = `<div class="bg-charcoal-light border border-charcoal-border rounded-xl p-10 text-center space-y-3"><h4 class="font-serif text-xl font-bold text-cream">No Reservations Yet</h4><p class="text-xs text-cream-muted">Book a Dining Table or Private KTV Room and track your status here!</p></div>`;
+                return;
+            }
+
+            container.innerHTML = myRes.map(r => {
+                const isPending = (r.status || '').toLowerCase() === 'pending';
+                const stepIdx = getReservationStepIndex(r.status);
+                const statusInfo = getReservationStatusInfo(r);
+                const steps = [
+                    { label: 'Pending', icon: 'fa-clock' },
+                    { label: 'Confirmed', icon: 'fa-calendar-check' },
+                    { label: 'Checked-In', icon: 'fa-door-open' },
+                    { label: 'Completed', icon: 'fa-circle-check' }
+                ];
+
+                return `
+                <div class="bg-charcoal-light border border-charcoal-border rounded-xl p-5 space-y-5 shadow-lg">
+                    <div class="flex flex-wrap justify-between items-start gap-2 border-b border-charcoal-border pb-3">
+                        <div>
+                            <div class="flex items-center gap-2"><span class="font-mono text-xs font-bold text-blue-400">#${r.id}</span><span class="text-[11px] text-cream-muted">• ${r.type}</span></div>
+                            <h4 class="font-bold text-base ${statusInfo.color} mt-1">${statusInfo.title}</h4>
+                            <p class="text-xs text-cream-muted">${statusInfo.subtitle}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider border ${statusInfo.badge}">${r.status}</span>
+                            ${isPending ? `<button onclick="cancelCustomerReservation(${r.db_id}, '${r.id}')" class="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-red-950/70 hover:bg-red-600 text-red-400 hover:text-white border border-red-600/50 transition" title="Cancel Booking"><i class="fa-solid fa-trash mr-1"></i>Cancel</button>` : ''}
+                        </div>
+                    </div>
+                    <div class="relative pt-2 pb-1">
+                        <div class="grid grid-cols-4 gap-2 relative z-10">
+                            ${steps.map((s, i) => {
+                                const done = i <= stepIdx;
+                                const active = i === stepIdx && stepIdx < 3;
+                                return `<div class="flex flex-col items-center text-center"><div class="w-9 h-9 rounded-full flex items-center justify-center text-xs border-2 transition-all ${done ? 'bg-emerald-600 border-emerald-400 text-white shadow-md shadow-emerald-900/50' : 'bg-charcoal border-charcoal-border text-cream-muted'} ${active ? 'ring-4 ring-emerald-500/25 animate-pulse' : ''}"><i class="fa-solid ${s.icon}"></i></div><span class="text-[10px] font-semibold mt-1.5 ${done ? 'text-cream' : 'text-cream-muted'}">${s.label}</span></div>`;
+                            }).join('')}
+                        </div>
+                        <div class="absolute top-6 left-[12.5%] right-[12.5%] h-1 bg-charcoal-border z-0 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 transition-all duration-500" style="width: ${(stepIdx / 3) * 100}%"></div></div>
+                    </div>
+                    <div class="bg-charcoal border border-charcoal-border rounded-lg p-3.5 space-y-1.5 text-xs text-cream-muted">
+                        <p><i class="fa-solid fa-calendar text-copper-light w-4"></i> <strong>Schedule:</strong> ${r.date} at ${r.time}</p>
+                        <p><i class="fa-solid fa-users text-copper-light w-4"></i> <strong>Guests:</strong> ${r.guests}</p>
+                        ${r.notes ? `<p><i class="fa-solid fa-note-sticky text-copper-light w-4"></i> <strong>Notes:</strong> ${r.notes}</p>` : ''}
+                        <div class="flex justify-between items-center pt-2 border-t border-charcoal-border text-xs font-bold">
+                            <span class="text-cream-muted">Rate / Deposit:</span>
+                            <span class="font-mono text-sm text-emerald-400">${r.type.includes('KTV') ? '₱600 / Hour (₱0 Deposit)' : 'Free Table Reservation'}</span>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function cancelCustomerReservation(db_id, resCode) {
+            if (!confirm(`Cancel reservation #${resCode}?`)) return;
+            await fetch('api.php?action=delete_reservation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ db_id })
+            });
+            showToast(`Reservation #${resCode} cancelled.`);
+            renderCustomerReservations();
+            checkUserSession();
+        }
+
+        // MENU FILTERING & RENDERING
+        function filterSubCategory(subId) {
+            currentSubCategory = subId;
+            document.querySelectorAll('.sub-pill-btn').forEach(btn => btn.className = 'sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-cream-muted hover:text-cream transition-all');
+            const active = document.getElementById(`pill-${subId}`);
+            if (active) active.className = 'sub-pill-btn px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all bg-copper text-white shadow';
+            renderMenuItems();
+        }
+
+        function renderMenuItems() {
+            const grid = document.getElementById('unified-menu-grid');
+            if (!grid) return;
+            let itemsToDisplay = [];
+            if (currentSubCategory === 'all') Object.keys(unifiedMenuData).forEach(cat => itemsToDisplay.push(...unifiedMenuData[cat]));
+            else itemsToDisplay = unifiedMenuData[currentSubCategory] || [];
+
+            grid.innerHTML = itemsToDisplay.map(item => {
+                const startingPrice = item.variants && item.variants.length > 0 ? item.variants[0].price : 0;
+                const hasMultiple = item.variants && item.variants.length > 1;
+                return `
+                <div class="bg-charcoal-light border border-charcoal-border p-5 rounded-2xl flex flex-col sm:flex-row items-center gap-5 hover:border-copper/40 transition-all group">
+                    <img src="${item.img}" alt="${item.name}" class="w-full sm:w-28 h-28 rounded-xl object-cover border border-charcoal-border group-hover:scale-105 transition-transform duration-500">
+                    <div class="flex-1 space-y-2 text-center sm:text-left w-full">
+                        <div class="flex items-center justify-between gap-2">
+                            <h4 onclick="openDishModal(${item.id})" class="font-serif text-lg font-bold text-cream group-hover:text-copper-light transition-colors cursor-pointer hover:underline">${item.name}</h4>
+                            <span class="font-serif font-bold text-copper-light text-lg">₱${startingPrice}</span>
+                        </div>
+                        <p class="text-xs text-cream-muted font-light leading-relaxed">${item.desc}</p>
+                        <div class="flex items-center justify-between pt-2">
+                            <button onclick="openDishModal(${item.id})" class="text-[10px] uppercase font-semibold text-cream-muted hover:text-copper-light transition-colors flex items-center gap-1"><i class="fa-solid fa-circle-info text-copper-light"></i> View Ingredients</button>
+                            <button onclick="openDishModal(${item.id})" class="px-3.5 py-1.5 rounded-lg bg-copper/20 hover:bg-copper text-copper-light hover:text-white border border-copper/40 text-xs font-semibold transition-all flex items-center gap-1.5"><i class="fa-solid fa-plus text-[10px]"></i><span>${hasMultiple ? 'Select Size' : 'Add'}</span></button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function openDishModal(id) {
+            let found = null;
+            Object.keys(unifiedMenuData).forEach(cat => { const match = unifiedMenuData[cat].find(i => i.id === id); if (match) found = match; });
+            if (!found) return;
+            selectedDish = found;
+            selectedVariant = found.variants[0];
+
+            document.getElementById('dish-modal-name').innerText = found.name;
+            document.getElementById('dish-modal-category').innerText = "ESTCOM SELECTION";
+            document.getElementById('dish-modal-desc').innerText = found.desc;
+            document.getElementById('modal-options-list').innerHTML = found.variants.map((v, index) => `
+                <label onclick="selectVariantIndex(${index})" class="flex items-center justify-between p-2.5 border border-charcoal-border rounded-lg cursor-pointer bg-charcoal hover:border-copper transition-all">
+                    <div class="flex items-center space-x-2"><input type="radio" name="modalVariant" value="${index}" ${index === 0 ? 'checked' : ''} class="accent-copper"><span class="text-xs text-cream font-medium">${v.label}</span></div>
+                    <span class="text-xs font-bold text-copper-light">₱${v.price}</span>
+                </label>`).join('');
+            document.getElementById('dish-modal-price').innerText = `₱${selectedVariant.price.toFixed(2)}`;
+            document.getElementById('dish-modal-ingredients').innerHTML = found.ingredients.map(ing => `<li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] text-copper-light"></i><span>${ing}</span></li>`).join('');
+            document.getElementById('dish-modal-add-btn').onclick = () => { addToCartWithVariant(selectedDish, selectedVariant); closeDishModal(); };
+            document.getElementById('dishModal').classList.remove('hidden');
+        }
+        function selectVariantIndex(index) { if (selectedDish && selectedDish.variants[index]) { selectedVariant = selectedDish.variants[index]; document.getElementById('dish-modal-price').innerText = `₱${selectedVariant.price.toFixed(2)}`; } }
+        function closeDishModal() { document.getElementById('dishModal').classList.add('hidden'); }
+
+        function addToCartWithVariant(dish, variant) {
+            const cartItemId = `${dish.id}-${variant.label}`;
+            const existing = cart.find(c => c.cartItemId === cartItemId);
+            if (existing) existing.quantity += 1;
+            else cart.push({ cartItemId, id: dish.id, name: `${dish.name} (${variant.label})`, price: variant.price, quantity: 1 });
+            updateCartUI();
+            showToast(`Added "${dish.name} (${variant.label})" to cart.`);
+        }
+        function removeFromCart(cartItemId) { cart = cart.filter(item => item.cartItemId !== cartItemId); updateCartUI(); }
+        function changeQuantity(cartItemId, delta) {
+            const item = cart.find(c => c.cartItemId === cartItemId);
+            if (!item) return;
+            item.quantity += delta;
+            if (item.quantity <= 0) removeFromCart(cartItemId);
+            else updateCartUI();
+        }
+        function updateCartUI() {
+            localStorage.setItem('estcom_temp_cart', JSON.stringify(cart));
+            const container = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-badge');
+            const totalCount = cart.reduce((sum, i) => sum + i.quantity, 0);
+            if (totalCount > 0) { badge.innerText = totalCount; badge.classList.remove('hidden'); }
+            else badge.classList.add('hidden');
+
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-16 space-y-3"><i class="fa-solid fa-utensils text-4xl text-charcoal-border"></i><p class="text-sm text-cream-muted">Your order selection is empty.</p></div>`;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="flex items-center justify-between p-3 bg-charcoal-light border border-charcoal-border rounded-sm">
+                        <div class="flex-1 pr-3"><h4 class="text-xs font-semibold text-cream">${item.name}</h4><span class="text-xs text-copper-light">₱${(item.price * item.quantity).toFixed(2)}</span></div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeQuantity('${item.cartItemId}', -1)" class="w-6 h-6 rounded bg-charcoal border border-charcoal-border text-cream-muted hover:text-copper-light flex items-center justify-center text-xs">-</button>
+                            <span class="text-xs text-cream font-medium px-1">${item.quantity}</span>
+                            <button onclick="changeQuantity('${item.cartItemId}', 1)" class="w-6 h-6 rounded bg-charcoal border border-charcoal-border text-cream-muted hover:text-copper-light flex items-center justify-center text-xs">+</button>
+                            <button onclick="removeFromCart('${item.cartItemId}')" class="text-cream-muted hover:text-red-400 text-xs ml-2"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>`).join('');
+            }
+            document.getElementById('cart-total').innerText = `₱${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}`;
+        }
+        function setupCartListeners() {
+            const drawer = document.getElementById('cart-drawer');
+            document.getElementById('open-cart-btn')?.addEventListener('click', () => drawer.classList.remove('hidden'));
+            document.getElementById('close-cart-btn')?.addEventListener('click', () => drawer.classList.add('hidden'));
+            document.getElementById('cart-backdrop')?.addEventListener('click', () => drawer.classList.add('hidden'));
+        }
+
+        // LOGIN REQUIRED BEFORE CHECKOUT
+        function openCheckoutModal() {
+            const role = localStorage.getItem('estcom_user_role');
+            const loggedName = localStorage.getItem('estcom_username');
+            const loggedPhone = localStorage.getItem('estcom_user_phone') || '';
+
+            if (role !== 'customer' || !loggedName) {
+                showToast("Please sign in or create an account before placing an order.");
+                setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+                return;
+            }
+            if (cart.length === 0) { showToast("Cart is empty!"); return; }
+
+            document.getElementById('custItems').value = cart.map(i => `${i.quantity}x ${i.name}`).join(", ");
+            document.getElementById('custTotal').value = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+            document.getElementById('custName').value = loggedName;
+            if (loggedPhone) document.getElementById('custPhone').value = loggedPhone;
+
+            document.getElementById('cart-drawer').classList.add('hidden');
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+        function closeCheckoutModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').classList.add('hidden');
+            cart = [];
+            localStorage.removeItem('estcom_temp_cart');
+            updateCartUI();
+            checkUserSession();
+        }
+
+        // SINGLE MYSQL ORDER FORM SUBMIT
+        function setupOrderFormListener() {
+            const orderForm = document.getElementById('orderForm');
+            if (!orderForm) return;
+            orderForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const selectedOrderType = document.querySelector('input[name="orderType"]:checked')?.value || 'Dine-in Order';
+                const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'Cash';
+                const name = document.getElementById('custName').value.trim();
+                const phone = document.getElementById('custPhone').value.trim();
+                const address = document.getElementById('custAddress').value.trim();
+                const itemsText = document.getElementById('custItems').value;
+                const total = parseFloat(document.getElementById('custTotal').value);
+
+                const res = await fetch('api.php?action=place_order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        phone: phone,
+                        address: address,
+                        type: selectedOrderType,
+                        pay: selectedPaymentMethod,
+                        total: total,
+                        items: cart.map(i => `${i.quantity}x ${i.name}`)
+                    })
+                });
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    closeCheckoutModal();
+                    document.getElementById('receiptDate').innerText = new Date().toLocaleString();
+                    document.getElementById('recOrderId').innerText = data.order_code;
+                    document.getElementById('recOrderType').innerText = selectedOrderType;
+                    document.getElementById('recPaymentMethod').innerText = selectedPaymentMethod;
+                    document.getElementById('recName').innerText = name;
+                    document.getElementById('recPhone').innerText = phone;
+                    document.getElementById('recAddress').innerText = address;
+                    document.getElementById('recItemsList').innerText = itemsText;
+                    document.getElementById('recTotal').innerText = "₱" + total.toFixed(2);
+                    document.getElementById('receiptModal').classList.remove('hidden');
+                    orderForm.reset();
+                } else {
+                    alert('Database error: ' + data.message);
+                }
+            });
+        }
+
+        // LOGIN REQUIRED BEFORE RESERVATION
+        function setupReservationForm() {
+            const form = document.getElementById('reservation-form');
+            const statusBox = document.getElementById('availability-status');
+            const statusText = document.getElementById('availability-text');
+
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const role = localStorage.getItem('estcom_user_role');
+                    const loggedName = localStorage.getItem('estcom_username');
+
+                    if (role !== 'customer' || !loggedName) {
+                        showToast("Please sign in or create an account before reserving.");
+                        setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+                        return;
+                    }
+
+                    const name = document.getElementById('res-name').value.trim();
+                    const phone = document.getElementById('res-phone').value.trim();
+                    const type = document.getElementById('res-type').value;
+                    const guests = document.getElementById('res-guests').value;
+                    const date = document.getElementById('res-date').value;
+                    const time = document.getElementById('res-time').value;
+                    const notes = document.getElementById('res-notes').value.trim();
+
+                    const res = await fetch('api.php?action=place_reservation', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, phone, type, guests, date, time, notes })
+                    });
+                    const data = await res.json();
+
+                    if (data.status === 'success') {
+                        statusBox.classList.remove('hidden');
+                        statusText.innerText = `Request #${data.res_code} sent! ${type} for ${name} on ${date} at ${time} is now Pending Approval.`;
+                        showToast(`Reservation #${data.res_code} saved!`);
+                        checkUserSession();
+                        form.reset();
+                        setDefaultDate();
+                        prefillReservationForm();
+                    } else {
+                        alert('Database error: ' + data.message);
+                    }
+                });
+            }
+        }
+
+        // REVIEWS FROM DATABASE
+        async function loadDatabaseReviews() {
+            try {
+                const res = await fetch('api.php?action=get_reviews');
+                const dbReviews = await res.json();
+                if (dbReviews.length > 0) reviewsData.unshift(...dbReviews);
+            } catch (err) {}
+            setupReviewCarousel();
+        }
+
+        function openReviewModal() { document.getElementById('reviewModal').classList.remove('hidden'); }
+        function closeReviewModal() { document.getElementById('reviewModal').classList.add('hidden'); }
+        function openMapModal() { document.getElementById('map-modal').classList.remove('hidden'); }
+        function closeMapModal() { document.getElementById('map-modal').classList.add('hidden'); }
+
+        function setupReviewCarousel() {
+            const quoteEl = document.getElementById('review-quote');
+            const authorEl = document.getElementById('review-author');
+            const roleEl = document.getElementById('review-role');
+            const starsEl = document.getElementById('review-stars');
+            const dotsContainer = document.getElementById('review-dots');
+
+            function updateReview(index) {
+                const item = reviewsData[index];
+                quoteEl.innerText = `"${item.quote}"`;
+                authorEl.innerText = item.author;
+                roleEl.innerText = item.role;
+                let starsHTML = '';
+                for (let i = 0; i < 5; i++) starsHTML += i < (item.stars || 5) ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>';
+                starsEl.innerHTML = starsHTML;
+
+                dotsContainer.innerHTML = '';
+                reviewsData.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.type = 'button';
+                    dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === index ? 'bg-copper scale-125' : 'bg-charcoal-border hover:bg-copper/50'}`;
+                    dot.onclick = () => { currentReviewIndex = i; updateReview(i); };
+                    dotsContainer.appendChild(dot);
+                });
+            }
+
+            document.getElementById('prev-review')?.addEventListener('click', () => { currentReviewIndex = (currentReviewIndex - 1 + reviewsData.length) % reviewsData.length; updateReview(currentReviewIndex); });
+            document.getElementById('next-review')?.addEventListener('click', () => { currentReviewIndex = (currentReviewIndex + 1) % reviewsData.length; updateReview(currentReviewIndex); });
+
+            document.getElementById('add-review-form')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const author = document.getElementById('rev-author').value;
+                const role = document.getElementById('rev-role').value;
+                const stars = parseInt(document.getElementById('rev-stars').value);
+                const quote = document.getElementById('rev-quote').value;
+
+                await fetch('api.php?action=add_review', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ author, role, stars, quote })
+                });
+
+                reviewsData.unshift({ quote, author, role, stars });
+                currentReviewIndex = 0;
+                updateReview(0);
+                showToast("Thank you! Review saved to database.");
+                e.target.reset();
+                closeReviewModal();
+            });
+
+            updateReview(currentReviewIndex);
+        }
+
+        function setupMobileMenu() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            if (btn && menu) btn.onclick = () => menu.classList.toggle('hidden');
+        }
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const messageEl = document.getElementById('toast-message');
+            if (toast && messageEl) {
+                messageEl.innerText = msg;
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+            }
+        }
+        function setDefaultDate() {
+            const dateInput = document.getElementById('res-date');
+            if (dateInput) {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                dateInput.value = tomorrow.toISOString().split('T')[0];
+            }
+        }
+
+        function openMapModal() {
+            const modal = document.getElementById('map-modal');
+            const frame = document.getElementById('estcom-map-frame');
+            modal.classList.remove('hidden');
+            if (frame) {
+                frame.src = "https://maps.google.com/maps?q=Cosico%20Avenue,%20Del%20Remedio,%20San%20Pablo%20City,%20Laguna&t=&z=16&ie=UTF8&iwloc=&output=embed";
+            }
+        }
+        function closeMapModal() { document.getElementById('map-modal').classList.add('hidden'); }
+    </script>
+</body>
+</html>

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin & Staff Portal | Estcom Resto & Bar</title>
+   
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: { DEFAULT: '#0F1115', light: '#181B20', card: '#1E222A', border: '#2A2F3A' },
+                        copper: { DEFAULT: '#DC2626', light: '#EF4444', dark: '#991B1B' },
+                        cream: { DEFAULT: '#F5F5F0', muted: '#A0A5B1' }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Manipis at Dark Theme Scrollbar para sa buong page at tables */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F1115;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A2F3A;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #DC2626;
+        }
+    </style>
+</head>
+<body class="bg-charcoal text-cream font-sans min-h-screen flex flex-col antialiased">
+
+    <!-- ADMIN HEADER / TOPBAR -->
+    <header class="bg-charcoal-card border-b border-charcoal-border sticky top-0 z-30 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="flex items-center space-x-2">
+                <span class="font-serif text-2xl font-bold tracking-widest uppercase text-copper-light">Estcom</span>
+                <span class="text-[10px] tracking-widest text-emerald-400 border border-emerald-500/40 bg-emerald-950/40 px-2 py-0.5 rounded font-mono uppercase">Admin Portal</span>
+            </a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <div class="text-right hidden sm:block">
+                <span id="admin-user-display" class="block text-xs font-bold text-cream">Logged in as: ADMIN</span>
+                <span class="text-[10px] text-cream-muted">San Pablo Branch</span>
+            </div>
+            
+            <a href="index.html" class="px-3 py-1.5 bg-charcoal border border-charcoal-border hover:border-copper text-cream-muted hover:text-white rounded text-xs font-semibold uppercase tracking-wider transition flex items-center gap-1.5">
+                <i class="fa-solid fa-store text-copper-light"></i>
+                <span>Main Website</span>
+            </a>
+
+            <button onclick="handleAdminLogout()" class="px-3 py-1.5 bg-red-950/60 border border-red-600 text-red-400 hover:bg-red-600 hover:text-white rounded text-xs font-semibold uppercase tracking-wider transition flex items-center gap-1.5">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- METRICS OVERVIEW CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-charcoal-card border border-charcoal-border p-5 rounded-xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-cream-muted uppercase font-semibold">Total Revenue</span>
+                    <h3 id="stat-total-sales" class="text-2xl font-serif font-bold text-emerald-400 mt-1">₱0.00</h3>
+                    <span id="stat-today-sales" class="text-[11px] text-cream-muted block mt-0.5">Today: ₱0.00</span>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-peso-sign"></i>
+                </div>
+            </div>
+
+            <div class="bg-charcoal-card border border-charcoal-border p-5 rounded-xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-cream-muted uppercase font-semibold">Active Orders</span>
+                    <h3 id="stat-active-orders" class="text-2xl font-serif font-bold text-copper-light mt-1">0 Orders</h3>
+                    <span class="text-[11px] text-cream-muted block mt-0.5">Kitchen Queue</span>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-copper/10 border border-copper/30 text-copper-light flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-bell-concierge"></i>
+                </div>
+            </div>
+
+            <div class="bg-charcoal-card border border-charcoal-border p-5 rounded-xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-cream-muted uppercase font-semibold">Active Bookings</span>
+                    <h3 id="stat-active-bookings" class="text-2xl font-serif font-bold text-blue-400 mt-1">0 Bookings</h3>
+                    <span id="stat-ktv-sales" class="text-[11px] text-cream-muted block mt-0.5">KTV Earned: ₱0.00</span>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+            </div>
+
+            <div class="bg-charcoal-card border border-charcoal-border p-5 rounded-xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-cream-muted uppercase font-semibold">Registered Customers</span>
+                    <h3 id="stat-total-customers" class="text-2xl font-serif font-bold text-yellow-400 mt-1">0 Accounts</h3>
+                    <span id="stat-total-reviews" class="text-[11px] text-cream-muted block mt-0.5">0 Reviews</span>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD NAVIGATION TABS (Malaki, Full-Width, Walang Scrollbar) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 bg-charcoal-card p-2 rounded-xl border border-charcoal-border">
+            <button onclick="switchAdminTab('kds')" id="tab-btn-kds" class="px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all bg-emerald-600 text-white flex items-center justify-center gap-2 shadow-sm">
+                <i class="fa-solid fa-utensils text-sm"></i>
+                <span>Kitchen KDS</span>
+            </button>
+            <button onclick="switchAdminTab('reservations')" id="tab-btn-reservations" class="px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all text-cream-muted hover:text-white hover:bg-charcoal-light flex items-center justify-center gap-2">
+                <i class="fa-solid fa-calendar-check text-sm"></i>
+                <span>Bookings</span>
+            </button>
+            <button onclick="switchAdminTab('pos')" id="tab-btn-pos" class="px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all text-cream-muted hover:text-white hover:bg-charcoal-light flex items-center justify-center gap-2">
+                <i class="fa-solid fa-cash-register text-sm"></i>
+                <span>Quick POS</span>
+            </button>
+            <button onclick="switchAdminTab('tables')" id="tab-btn-tables" class="px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all text-cream-muted hover:text-white hover:bg-charcoal-light flex items-center justify-center gap-2">
+                <i class="fa-solid fa-layer-group text-sm"></i>
+                <span>Floor Plan</span>
+            </button>
+            <button onclick="switchAdminTab('analytics')" id="tab-btn-analytics" class="px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all text-cream-muted hover:text-white hover:bg-charcoal-light flex items-center justify-center gap-2">
+                <i class="fa-solid fa-chart-column text-sm"></i>
+                <span>Earnings</span>
+            </button>
+            <button onclick="switchAdminTab('reviews')" id="tab-btn-reviews" class="px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all text-cream-muted hover:text-white hover:bg-charcoal-light flex items-center justify-center gap-2">
+                <i class="fa-solid fa-star text-sm"></i>
+                <span>Reviews</span>
+            </button>
+            <button onclick="switchAdminTab('customers')" id="tab-btn-customers" class="px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all text-cream-muted hover:text-white hover:bg-charcoal-light flex items-center justify-center gap-2">
+                <i class="fa-solid fa-users text-sm"></i>
+                <span>Customers</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: KITCHEN DISPLAY SYSTEM (KDS) -->
+        <div id="panel-kds" class="space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-serif text-xl font-bold text-cream">Live Kitchen Orders</h3>
+                <span class="text-xs text-cream-muted">Status updates reflect live in Customer Profile Tracker</span>
+            </div>
+
+            <div id="kds-orders-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- TAB 2: TABLE & KTV RESERVATIONS -->
+        <div id="panel-reservations" class="hidden space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-serif text-xl font-bold text-cream">Table & KTV Room Bookings</h3>
+                <span class="text-xs text-cream-muted">Approve or check-in guest reservations (KTV ₱600/hr adds to earnings upon approval)</span>
+            </div>
+
+            <div id="reservations-admin-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- TAB 3: COUNTER QUICK POS REGISTER -->
+        <div id="panel-pos" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-8 bg-charcoal-card p-6 rounded-xl border border-charcoal-border space-y-4">
+                <h3 class="font-serif text-xl font-bold text-cream">Quick Order Register</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <button onclick="addPosItem('Sisig Pizza', 300)" class="p-4 bg-charcoal border border-charcoal-border hover:border-emerald-500 rounded-lg text-left transition space-y-1">
+                        <span class="block font-bold text-cream text-sm">Sisig Pizza</span>
+                        <span class="text-xs text-emerald-400 font-mono">₱300.00</span>
+                    </button>
+                    <button onclick="addPosItem('Beef Salpicao', 320)" class="p-4 bg-charcoal border border-charcoal-border hover:border-emerald-500 rounded-lg text-left transition space-y-1">
+                        <span class="block font-bold text-cream text-sm">Beef Salpicao</span>
+                        <span class="text-xs text-emerald-400 font-mono">₱320.00</span>
+                    </button>
+                    <button onclick="addPosItem('Spanish Latte (Cold)', 120)" class="p-4 bg-charcoal border border-charcoal-border hover:border-emerald-500 rounded-lg text-left transition space-y-1">
+                        <span class="block font-bold text-cream text-sm">Spanish Latte</span>
+                        <span class="text-xs text-emerald-400 font-mono">₱120.00</span>
+                    </button>
+                    <button onclick="addPosItem('Loaded Fries', 210)" class="p-4 bg-charcoal border border-charcoal-border hover:border-emerald-500 rounded-lg text-left transition space-y-1">
+                        <span class="block font-bold text-cream text-sm">Loaded Fries</span>
+                        <span class="text-xs text-emerald-400 font-mono">₱210.00</span>
+                    </button>
+                    <button onclick="addPosItem('Crispy Pata (Med)', 750)" class="p-4 bg-charcoal border border-charcoal-border hover:border-emerald-500 rounded-lg text-left transition space-y-1">
+                        <span class="block font-bold text-cream text-sm">Crispy Pata</span>
+                        <span class="text-xs text-emerald-400 font-mono">₱750.00</span>
+                    </button>
+                    <button onclick="addPosItem('Nachos Supreme', 210)" class="p-4 bg-charcoal border border-charcoal-border hover:border-emerald-500 rounded-lg text-left transition space-y-1">
+                        <span class="block font-bold text-cream text-sm">Nachos Supreme</span>
+                        <span class="text-xs text-emerald-400 font-mono">₱210.00</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 bg-charcoal-card p-6 rounded-xl border border-charcoal-border flex flex-col justify-between space-y-4">
+                <div>
+                    <h3 class="font-serif text-xl font-bold text-cream border-b border-charcoal-border pb-3 mb-4">Current Order</h3>
+                    <div id="pos-items-list" class="space-y-2 text-xs max-h-60 overflow-y-auto">
+                        <p class="text-cream-muted text-center py-8">Select dishes on the left to add to bill.</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-charcoal-border pt-4 space-y-3">
+                    <div class="flex justify-between items-center font-bold text-base">
+                        <span>Total Due:</span>
+                        <span id="pos-total-due" class="text-emerald-400 font-mono text-xl">₱0.00</span>
+                    </div>
+                    <button onclick="processPosCheckout()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg uppercase tracking-wider text-xs transition shadow-md">
+                        Process Counter Cash Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: TABLES & KTV ROOM STATUS -->
+        <div id="panel-tables" class="hidden space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-serif text-xl font-bold text-cream">Floor Plan & Room Occupancy</h3>
+                <span id="stat-occupied-tables" class="text-xs text-emerald-400 font-mono">0 / 4 Occupied</span>
+            </div>
+            <div id="tables-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
+        </div>
+
+        <!-- TAB 5: EARNINGS & ANALYTICS DIAGRAM (FOOD + KTV) -->
+        <div id="panel-analytics" class="hidden space-y-6">
+            <div class="flex flex-wrap justify-between items-center gap-3">
+                <div>
+                    <h3 class="font-serif text-xl font-bold text-cream">Daily Earnings & Revenue Diagram</h3>
+                    <p class="text-xs text-cream-muted">Includes Food & Drinks Orders + Approved KTV Room Rentals (₱600/hr)</p>
+                </div>
+                <div class="flex items-center gap-3 bg-charcoal-card border border-charcoal-border px-4 py-2 rounded-lg">
+                    <span class="text-xs text-cream-muted">Today's Earnings:</span>
+                    <span id="analytics-today-sales" class="font-mono text-base font-bold text-emerald-400">₱0.00</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-charcoal-card border border-charcoal-border rounded-xl p-6 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-cream">Daily Earnings Trend (₱)</h4>
+                        <span class="text-[11px] text-emerald-400"><i class="fa-solid fa-chart-bar mr-1"></i>Last 7 Active Days</span>
+                    </div>
+                    <div class="h-72">
+                        <canvas id="dailyEarningsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-charcoal-card border border-charcoal-border rounded-xl p-6 space-y-4">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-cream">Revenue Breakdown</h4>
+                    <div class="h-72 flex items-center justify-center">
+                        <canvas id="revenueBreakdownChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-charcoal-card border border-charcoal-border rounded-xl overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-charcoal-light border-b border-charcoal-border text-cream-muted uppercase">
+                        <tr>
+                            <th class="p-4">Date</th>
+                            <th class="p-4">Food & Drinks</th>
+                            <th class="p-4">KTV Room (₱600/hr)</th>
+                            <th class="p-4 text-right">Total Daily Earnings</th>
+                        </tr>
+                    </thead>
+                    <tbody id="daily-earnings-table-body" class="divide-y divide-charcoal-border"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 6: CUSTOMER REVIEWS MONITOR -->
+        <div id="panel-reviews" class="hidden space-y-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="font-serif text-xl font-bold text-cream">Customer Reviews & Feedback</h3>
+                    <p class="text-xs text-cream-muted">See everyone who reviewed Estcom Resto & Bar</p>
+                </div>
+                <span id="reviews-count-badge" class="text-xs text-yellow-400 font-mono">0 Reviews</span>
+            </div>
+
+            <div id="admin-reviews-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- TAB 7: REGISTERED CUSTOMERS DATABASE -->
+        <div id="panel-customers" class="hidden space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-serif text-xl font-bold text-cream">Customer Database</h3>
+                <span id="customer-count-badge" class="text-xs text-emerald-400 font-mono">0 Registered</span>
+            </div>
+
+            <div class="bg-charcoal-card border border-charcoal-border rounded-xl overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-charcoal-light border-b border-charcoal-border text-cream-muted uppercase">
+                        <tr>
+                            <th class="p-4">Customer ID</th>
+                            <th class="p-4">Full Name</th>
+                            <th class="p-4">Email Address</th>
+                            <th class="p-4">Contact Number</th>
+                            <th class="p-4">Date Registered</th>
+                            <th class="p-4 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customers-table-body" class="divide-y divide-charcoal-border"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        let tableList = [
+            { id: 'Table 01', type: 'Dining Table', cap: '4 Pax', occupied: false },
+            { id: 'Table 02', type: 'Dining Table', cap: '4 Pax', occupied: false },
+            { id: 'Table 03', type: 'Dining Table', cap: '6 Pax', occupied: false },
+            { id: 'KTV VIP 01', type: 'KTV Room (₱600/hr)', cap: '12 Pax', occupied: false }
+        ];
+        let posCart = [];
+        let cachedOrders = [];
+        let cachedReservations = [];
+        let cachedReviews = [];
+        let dailyChartInstance = null;
+        let breakdownChartInstance = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const role = localStorage.getItem('estcom_user_role');
+            const username = localStorage.getItem('estcom_username');
+
+            if (role !== 'staff') {
+                alert('Access Restricted. Please sign in as Admin or Staff first.');
+                window.location.href = 'login.html';
+                return;
+            }
+            if (username) document.getElementById('admin-user-display').innerText = `Logged in as: ${username}`;
+
+            refreshAllAdminData();
+        });
+
+        async function refreshAllAdminData() {
+            await Promise.all([
+                renderKDS(),
+                renderAdminReservations(),
+                renderCustomers(),
+                renderAdminReviews()
+            ]);
+            updateCombinedRevenueStats();
+            renderAnalyticsDiagram();
+        }
+
+        function switchAdminTab(tab) {
+            const panels = ['kds', 'reservations', 'pos', 'tables', 'analytics', 'reviews', 'customers'];
+            const inactiveClass = 'px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all text-cream-muted hover:text-white hover:bg-charcoal-light flex items-center justify-center gap-2';
+            const activeClass = 'px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all bg-emerald-600 text-white flex items-center justify-center gap-2 shadow-sm';
+
+            panels.forEach(p => {
+                document.getElementById(`panel-${p}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${p}`).className = inactiveClass;
+            });
+
+            document.getElementById(`panel-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tab}`).className = activeClass;
+
+            if (tab === 'kds') renderKDS().then(() => { updateCombinedRevenueStats(); renderAnalyticsDiagram(); });
+            if (tab === 'reservations') renderAdminReservations().then(() => { updateCombinedRevenueStats(); renderAnalyticsDiagram(); });
+            if (tab === 'analytics') renderAnalyticsDiagram();
+            if (tab === 'reviews') renderAdminReviews();
+            if (tab === 'customers') renderCustomers();
+        }
+
+        // COMPUTE KTV EARNINGS (₱600/hr for Confirmed / Checked-In / Completed KTV Bookings)
+        function getKtvEarnings() {
+            return cachedReservations
+                .filter(r => (r.type || '').includes('KTV') && r.status !== 'Pending')
+                .map(r => {
+                    const match = (r.notes || '').match(/(\d+)\s*(hr|hrs|hour|hours)/i);
+                    const hours = match ? parseInt(match[1]) : 1;
+                    return {
+                        date: r.date || new Date().toISOString().split('T')[0],
+                        amount: hours * 600
+                    };
+                });
+        }
+
+        function updateCombinedRevenueStats() {
+            const foodTotal = cachedOrders.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
+            const ktvList = getKtvEarnings();
+            const ktvTotal = ktvList.reduce((sum, k) => sum + k.amount, 0);
+            const grandTotal = foodTotal + ktvTotal;
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayFood = cachedOrders
+                .filter(o => (o.date || '').startsWith(todayStr))
+                .reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
+            const todayKtv = ktvList
+                .filter(k => k.date === todayStr)
+                .reduce((sum, k) => sum + k.amount, 0);
+            const todayGrand = todayFood + todayKtv;
+
+            document.getElementById('stat-total-sales').innerText = `₱${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('stat-today-sales').innerText = `Today: ₱${todayGrand.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('stat-ktv-sales').innerText = `KTV Earned: ₱${ktvTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('analytics-today-sales').innerText = `₱${todayGrand.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        function getActionButtonLabel(order) {
+            const isDelivery = (order.type || '').toLowerCase().includes('delivery');
+            if (order.status === 'Pending') return 'Approve & Cook';
+            if (order.status === 'Preparing') return isDelivery ? 'Send Out for Delivery' : 'Ready to Serve';
+            if (order.status === 'On the Way' || order.status === 'Ready') return isDelivery ? 'Mark Delivered' : 'Mark Served';
+            return 'Completed';
+        }
+
+        function getStatusBadgeStyle(status) {
+            const s = (status || '').toLowerCase();
+            if (s === 'completed') return 'bg-emerald-950 text-emerald-400 border border-emerald-600';
+            if (s === 'on the way' || s === 'ready' || s === 'checked-in') return 'bg-blue-950 text-blue-400 border border-blue-600';
+            if (s === 'preparing' || s === 'confirmed') return 'bg-amber-950 text-amber-400 border border-amber-600';
+            return 'bg-red-950 text-red-400 border border-red-600';
+        }
+
+        async function renderKDS() {
+            const res = await fetch('api.php?action=get_orders');
+            cachedOrders = await res.json();
+            const container = document.getElementById('kds-orders-container');
+
+            const activeCount = cachedOrders.filter(o => o.status !== 'Completed').length;
+            document.getElementById('stat-active-orders').innerText = `${activeCount} Order${activeCount === 1 ? '' : 's'}`;
+            updateCombinedRevenueStats();
+
+            if (cachedOrders.length === 0) {
+                container.innerHTML = `<div class="col-span-full bg-charcoal-card border border-charcoal-border rounded-xl p-10 text-center text-cream-muted text-sm">No live orders in database yet.</div>`;
+                return;
+            }
+
+            container.innerHTML = cachedOrders.map((o, idx) => `
+                <div class="bg-charcoal-card border border-charcoal-border rounded-xl p-5 space-y-4">
+                    <div class="flex justify-between items-start border-b border-charcoal-border pb-3">
+                        <div>
+                            <span class="font-mono text-xs text-copper-light font-bold">#${o.id}</span>
+                            <h4 class="font-bold text-cream text-sm">${o.name}</h4>
+                            <span class="text-[11px] text-cream-muted">${o.type} • ${o.pay}</span>
+                            ${o.phone ? `<span class="block text-[10px] text-cream-muted mt-0.5"><i class="fa-solid fa-phone text-[9px] mr-1"></i>${o.phone}</span>` : ''}
+                        </div>
+                        <span class="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${getStatusBadgeStyle(o.status)}">${o.status}</span>
+                    </div>
+                    <div class="space-y-1 text-xs text-cream-muted">
+                        ${(o.items || []).map(i => `<p class="flex items-center gap-2"><i class="fa-solid fa-circle-dot text-[8px] text-copper-light"></i> ${i}</p>`).join('')}
+                        ${o.address ? `<p class="text-[11px] text-cream-muted/80 pt-1 border-t border-charcoal-border/50 mt-2"><strong>Note/Address:</strong> ${o.address}</p>` : ''}
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-charcoal-border">
+                        <span class="font-mono font-bold text-emerald-400">₱${parseFloat(o.total).toFixed(2)}</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="advanceOrderStatus(${idx})" class="px-3 py-1.5 ${o.status === 'Completed' ? 'bg-zinc-700 cursor-default' : 'bg-emerald-600 hover:bg-emerald-500'} text-white text-xs font-bold rounded transition">${getActionButtonLabel(o)}</button>
+                            <button onclick="deleteOrder(${o.db_id})" class="px-2 py-1.5 bg-red-950/60 border border-red-600/50 text-red-400 hover:bg-red-600 hover:text-white text-xs rounded transition"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function advanceOrderStatus(idx) {
+            const order = cachedOrders[idx];
+            if (!order || order.status === 'Completed') return;
+            const isDelivery = (order.type || '').toLowerCase().includes('delivery');
+            let nextStatus = 'Completed';
+
+            if (order.status === 'Pending') nextStatus = 'Preparing';
+            else if (order.status === 'Preparing') nextStatus = isDelivery ? 'On the Way' : 'Ready';
+
+            await fetch('api.php?action=update_order_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ db_id: order.db_id, status: nextStatus })
+            });
+            await renderKDS();
+            renderAnalyticsDiagram();
+        }
+
+        async function deleteOrder(db_id) {
+            if (!confirm('Remove this order from database?')) return;
+            await fetch('api.php?action=delete_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ db_id })
+            });
+            await renderKDS();
+            renderAnalyticsDiagram();
+        }
+
+        // RESERVATIONS
+        function getReservationActionLabel(status) {
+            if (status === 'Pending') return 'Approve Booking';
+            if (status === 'Confirmed') return 'Check-In Guest';
+            if (status === 'Checked-In') return 'Mark Completed';
+            return 'Completed';
+        }
+
+        async function renderAdminReservations() {
+            const res = await fetch('api.php?action=get_reservations');
+            cachedReservations = await res.json();
+            const container = document.getElementById('reservations-admin-container');
+            const activeBookings = cachedReservations.filter(r => r.status !== 'Completed').length;
+
+            document.getElementById('stat-active-bookings').innerText = `${activeBookings} Booking${activeBookings === 1 ? '' : 's'}`;
+            updateCombinedRevenueStats();
+
+            if (cachedReservations.length === 0) {
+                container.innerHTML = `<div class="col-span-full bg-charcoal-card border border-charcoal-border rounded-xl p-10 text-center text-cream-muted text-sm">No reservations in database yet.</div>`;
+                return;
+            }
+
+            container.innerHTML = cachedReservations.map((r, idx) => `
+                <div class="bg-charcoal-card border border-charcoal-border rounded-xl p-5 space-y-4">
+                    <div class="flex justify-between items-start border-b border-charcoal-border pb-3">
+                        <div>
+                            <span class="font-mono text-xs text-blue-400 font-bold">#${r.id}</span>
+                            <h4 class="font-bold text-cream text-sm">${r.name}</h4>
+                            <span class="text-[11px] text-copper-light font-semibold">${r.type}</span>
+                        </div>
+                        <span class="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${getStatusBadgeStyle(r.status)}">${r.status}</span>
+                    </div>
+                    <div class="space-y-1.5 text-xs text-cream-muted">
+                        <p><i class="fa-solid fa-calendar text-blue-400 w-4"></i> <strong>Schedule:</strong> ${r.date} at ${r.time}</p>
+                        <p><i class="fa-solid fa-users text-blue-400 w-4"></i> <strong>Guests:</strong> ${r.guests}</p>
+                        <p><i class="fa-solid fa-phone text-blue-400 w-4"></i> <strong>Contact:</strong> ${r.phone}</p>
+                        ${r.notes ? `<p class="text-[11px] text-cream-muted/80 pt-1 border-t border-charcoal-border/50 mt-2"><strong>Notes:</strong> ${r.notes}</p>` : ''}
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-charcoal-border">
+                        <span class="text-[11px] text-emerald-400 font-semibold">${r.type.includes('KTV') ? '₱600/hr' : 'Free Table'}</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="advanceReservationStatus(${idx})" class="px-3 py-1.5 ${r.status === 'Completed' ? 'bg-zinc-700 cursor-default' : 'bg-blue-600 hover:bg-blue-500'} text-white text-xs font-bold rounded transition">${getReservationActionLabel(r.status)}</button>
+                            <button onclick="deleteReservation(${r.db_id})" class="px-2 py-1.5 bg-red-950/60 border border-red-600/50 text-red-400 hover:bg-red-600 hover:text-white text-xs rounded transition"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function advanceReservationStatus(idx) {
+            const r = cachedReservations[idx];
+            if (!r || r.status === 'Completed') return;
+            let nextStatus = 'Completed';
+            if (r.status === 'Pending') nextStatus = 'Confirmed';
+            else if (r.status === 'Confirmed') nextStatus = 'Checked-In';
+
+            await fetch('api.php?action=update_res_status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ db_id: r.db_id, status: nextStatus })
+            });
+            await renderAdminReservations();
+            renderAnalyticsDiagram();
+        }
+
+        async function deleteReservation(db_id) {
+            if (!confirm('Remove this reservation?')) return;
+            await fetch('api.php?action=delete_res', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ db_id })
+            });
+            await renderAdminReservations();
+            renderAnalyticsDiagram();
+        }
+
+        // POS
+        function addPosItem(name, price) { posCart.push({ name, price }); renderPosCart(); }
+        function renderPosCart() {
+            const list = document.getElementById('pos-items-list');
+            const totalEl = document.getElementById('pos-total-due');
+            if (posCart.length === 0) {
+                list.innerHTML = `<p class="text-cream-muted text-center py-8">Select dishes on the left to add to bill.</p>`;
+                totalEl.innerText = '₱0.00';
+                return;
+            }
+            list.innerHTML = posCart.map((item, i) => `
+                <div class="flex justify-between items-center p-2 bg-charcoal rounded border border-charcoal-border">
+                    <span>${item.name}</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-mono text-emerald-400">₱${item.price.toFixed(2)}</span>
+                        <button onclick="posCart.splice(${i},1); renderPosCart();" class="text-red-400 hover:text-white">&times;</button>
+                    </div>
+                </div>
+            `).join('');
+            totalEl.innerText = `₱${posCart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}`;
+        }
+
+        async function processPosCheckout() {
+            if (posCart.length === 0) return alert('Please select items before checking out.');
+            const total = posCart.reduce((sum, item) => sum + item.price, 0);
+            await fetch('api.php?action=place_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: 'Walk-in Counter Guest',
+                    phone: 'N/A',
+                    address: 'Counter POS',
+                    type: 'Counter POS',
+                    pay: 'Cash',
+                    total: total,
+                    items: posCart.map(i => `1x ${i.name}`)
+                })
+            });
+            alert('Payment Successful! Order saved to MySQL & sent to KDS.');
+            posCart = [];
+            renderPosCart();
+            await renderKDS();
+            renderAnalyticsDiagram();
+        }
+
+        // FLOOR PLAN
+        function renderTables() {
+            const grid = document.getElementById('tables-grid');
+            const occupiedCount = tableList.filter(t => t.occupied).length;
+            document.getElementById('stat-occupied-tables').innerText = `${occupiedCount} / ${tableList.length} Occupied`;
+            grid.innerHTML = tableList.map((t, idx) => `
+                <button onclick="toggleTable(${idx})" class="p-5 rounded-xl border text-left transition ${t.occupied ? 'bg-red-950/30 border-red-600/60' : 'bg-charcoal-card border-charcoal-border hover:border-emerald-500'}">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-cream text-base">${t.id}</h4>
+                        <span class="w-2.5 h-2.5 rounded-full ${t.occupied ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'}"></span>
+                    </div>
+                    <p class="text-xs text-cream-muted">${t.type}</p>
+                    <span class="inline-block mt-3 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded ${t.occupied ? 'bg-red-900/40 text-red-400' : 'bg-emerald-900/40 text-emerald-400'}">${t.occupied ? 'Occupied' : 'Available'}</span>
+                </button>
+            `).join('');
+        }
+        function toggleTable(idx) { tableList[idx].occupied = !tableList[idx].occupied; renderTables(); }
+
+        // EARNINGS & ANALYTICS DIAGRAM (FOOD + KTV)
+        function renderAnalyticsDiagram() {
+            const dailyMap = {};
+            const typeMap = {};
+
+            cachedOrders.forEach(o => {
+                const rawDate = (o.date || new Date().toISOString()).split(' ')[0].split('T')[0];
+                const amt = parseFloat(o.total) || 0;
+                if (!dailyMap[rawDate]) dailyMap[rawDate] = { food: 0, ktv: 0 };
+                dailyMap[rawDate].food += amt;
+
+                const oType = o.type || 'Dine-in Order';
+                typeMap[oType] = (typeMap[oType] || 0) + amt;
+            });
+
+            const ktvList = getKtvEarnings();
+            ktvList.forEach(k => {
+                if (!dailyMap[k.date]) dailyMap[k.date] = { food: 0, ktv: 0 };
+                dailyMap[k.date].ktv += k.amount;
+                typeMap['KTV Room Rental'] = (typeMap['KTV Room Rental'] || 0) + k.amount;
+            });
+
+            const sortedDates = Object.keys(dailyMap).sort();
+            const last7Dates = sortedDates.slice(-7);
+
+            const tbody = document.getElementById('daily-earnings-table-body');
+            if (sortedDates.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-cream-muted">No daily sales records yet.</td></tr>`;
+            } else {
+                tbody.innerHTML = [...sortedDates].reverse().map(d => {
+                    const rowTotal = dailyMap[d].food + dailyMap[d].ktv;
+                    return `
+                    <tr class="hover:bg-charcoal-light/50 transition">
+                        <td class="p-4 font-mono text-cream">${d}</td>
+                        <td class="p-4 font-mono text-cream-muted">₱${dailyMap[d].food.toFixed(2)}</td>
+                        <td class="p-4 font-mono text-blue-400">₱${dailyMap[d].ktv.toFixed(2)}</td>
+                        <td class="p-4 text-right font-mono font-bold text-emerald-400">₱${rowTotal.toFixed(2)}</td>
+                    </tr>`;
+                }).join('');
+            }
+
+            const ctxBar = document.getElementById('dailyEarningsChart');
+            if (ctxBar) {
+                if (dailyChartInstance) dailyChartInstance.destroy();
+                dailyChartInstance = new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: last7Dates.length ? last7Dates : ['No Sales Yet'],
+                        datasets: [
+                            {
+                                label: 'Food & Drinks (₱)',
+                                data: last7Dates.length ? last7Dates.map(d => dailyMap[d].food) : [0],
+                                backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                                borderColor: '#10B981',
+                                borderWidth: 1,
+                                borderRadius: 4
+                            },
+                            {
+                                label: 'KTV Room (₱)',
+                                data: last7Dates.length ? last7Dates.map(d => dailyMap[d].ktv) : [0],
+                                backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                                borderColor: '#3B82F6',
+                                borderWidth: 1,
+                                borderRadius: 4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { labels: { color: '#F5F5F0' } } },
+                        scales: {
+                            x: { stacked: true, ticks: { color: '#A0A5B1' }, grid: { color: '#2A2F3A' } },
+                            y: {
+                                stacked: true,
+                                beginAtZero: true,
+                                ticks: { color: '#A0A5B1', callback: v => '₱' + v },
+                                grid: { color: '#2A2F3A' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const ctxPie = document.getElementById('revenueBreakdownChart');
+            if (ctxPie) {
+                if (breakdownChartInstance) breakdownChartInstance.destroy();
+                const labels = Object.keys(typeMap);
+                const values = Object.values(typeMap);
+                breakdownChartInstance = new Chart(ctxPie, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels.length ? labels : ['No Data'],
+                        datasets: [{
+                            data: values.length ? values : [1],
+                            backgroundColor: ['#10B981', '#DC2626', '#3B82F6', '#F59E0B', '#8B5CF6'],
+                            borderColor: '#1E222A',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom', labels: { color: '#F5F5F0', font: { size: 11 } } } }
+                    }
+                });
+            }
+        }
+
+        // CUSTOMER REVIEWS (FROM REVIEWS TABLE)
+        async function renderAdminReviews() {
+            const res = await fetch('api.php?action=get_reviews');
+            cachedReviews = await res.json();
+            const container = document.getElementById('admin-reviews-container');
+            document.getElementById('reviews-count-badge').innerText = `${cachedReviews.length} Review${cachedReviews.length === 1 ? '' : 's'}`;
+            document.getElementById('stat-total-reviews').innerText = `${cachedReviews.length} Review${cachedReviews.length === 1 ? '' : 's'}`;
+
+            if (cachedReviews.length === 0) {
+                container.innerHTML = `<div class="col-span-full bg-charcoal-card border border-charcoal-border rounded-xl p-10 text-center text-cream-muted text-sm">No customer reviews submitted yet.</div>`;
+                return;
+            }
+
+            container.innerHTML = cachedReviews.map(rev => {
+                const stars = parseInt(rev.stars || 5);
+                const starsHtml = Array.from({ length: 5 }, (_, i) =>
+                    i < stars ? '<i class="fa-solid fa-star text-yellow-400"></i>' : '<i class="fa-regular fa-star text-cream-muted"></i>'
+                ).join('');
+
+                return `
+                <div class="bg-charcoal-card border border-charcoal-border rounded-xl p-5 space-y-3 flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-start border-b border-charcoal-border pb-3">
+                            <div>
+                                <h4 class="font-bold text-cream text-sm">${rev.author}</h4>
+                                <span class="text-[11px] text-copper-light font-semibold">${rev.role || 'Guest'}</span>
+                            </div>
+                            <div class="text-xs space-x-0.5">${starsHtml}</div>
+                        </div>
+                        <p class="text-xs text-cream-muted italic leading-relaxed pt-1">"${rev.quote}"</p>
+                    </div>
+                    <div class="flex justify-between items-center pt-3 border-t border-charcoal-border text-[11px] text-cream-muted">
+                        <span>${rev.created_at || 'Verified Review'}</span>
+                        <button onclick="deleteReview(${rev.db_id})" class="px-2.5 py-1 bg-red-950/60 border border-red-600/50 text-red-400 hover:bg-red-600 hover:text-white rounded transition">Remove</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function deleteReview(db_id) {
+            if (!confirm('Remove this review from database?')) return;
+            await fetch('api.php?action=delete_review', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ db_id })
+            });
+            renderAdminReviews();
+        }
+
+        // CUSTOMERS (FROM USERS TABLE)
+        async function renderCustomers() {
+            const res = await fetch('api.php?action=get_users');
+            const customers = await res.json();
+            const tbody = document.getElementById('customers-table-body');
+            document.getElementById('customer-count-badge').innerText = `${customers.length} Registered`;
+            document.getElementById('stat-total-customers').innerText = `${customers.length} Account${customers.length === 1 ? '' : 's'}`;
+
+            if (customers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-cream-muted">No registered customers in database yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = customers.map(c => `
+                <tr class="hover:bg-charcoal-light/50 transition">
+                    <td class="p-4 font-mono text-copper-light font-bold">${c.user_code}</td>
+                    <td class="p-4 font-semibold text-cream">${c.name}</td>
+                    <td class="p-4 text-cream-muted">${c.email}</td>
+                    <td class="p-4 text-cream-muted">${c.phone}</td>
+                    <td class="p-4 text-emerald-400">${c.date_joined}</td>
+                    <td class="p-4 text-right">
+                        <button onclick="deleteCustomer(${c.id})" class="px-2.5 py-1 bg-red-950/60 border border-red-600/50 text-red-400 hover:bg-red-600 hover:text-white rounded text-[11px] transition">Remove</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function deleteCustomer(id) {
+            if (!confirm('Remove this user account from MySQL?')) return;
+            await fetch('api.php?action=delete_user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            renderCustomers();
+        }
+
+        function handleAdminLogout() {
+            localStorage.removeItem('estcom_user_role');
+            localStorage.removeItem('estcom_username');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | Estcom Resto & Bar</title>
+  
+   <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: { DEFAULT: '#0F1115', light: '#181B20', card: '#1E222A', border: '#2A2F3A' },
+                        copper: { DEFAULT: '#DC2626', light: '#EF4444', dark: '#991B1B' },
+                        cream: { DEFAULT: '#F5F5F0', muted: '#A0A5B1' }
+                    },
+                    fontFamily: { serif: ['Cormorant Garamond', 'serif'], sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-charcoal text-cream font-sans min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+
+    <div class="absolute top-0 left-0 w-96 h-96 bg-copper/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-emerald-600/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- CUSTOMER LOGIN & REGISTER PORTAL -->
+    <div id="customer-portal-box" class="relative z-10 w-full max-w-md bg-charcoal-card border border-charcoal-border rounded-2xl p-8 shadow-2xl space-y-6">
+        <div class="text-center">
+            <!-- 5-CLICK SECRET TRIGGER SA LOGO -->
+            <div id="secret-logo-trigger" class="inline-block cursor-pointer select-none" title="Estcom Resto & Bar">
+                <span class="font-serif text-3xl font-bold tracking-widest uppercase text-copper-light">Estcom</span>
+                <span class="block text-[10px] tracking-[0.3em] text-cream-muted uppercase">Resto & Bar</span>
+            </div>
+            <h2 class="font-serif text-2xl font-bold text-cream mt-3">Welcome Back</h2>
+            <p class="text-xs text-cream-muted">Sign in to order food, reserve a table, or track your live status.</p>
+        </div>
+
+        <div class="grid grid-cols-2 bg-charcoal p-1 rounded-lg border border-charcoal-border">
+            <button onclick="switchCustomerTab('login')" id="btn-cust-login" class="py-2 text-xs font-bold uppercase tracking-wider rounded bg-copper text-white transition">Sign In</button>
+            <button onclick="switchCustomerTab('register')" id="btn-cust-register" class="py-2 text-xs font-bold uppercase tracking-wider rounded text-cream-muted hover:text-white transition">Create Account</button>
+        </div>
+
+        <div id="cust-error-box" class="hidden p-3 rounded-lg bg-red-950/60 border border-red-600/50 text-xs text-red-400"></div>
+
+        <!-- CUSTOMER SIGN IN FORM -->
+        <form id="customerLoginForm" class="space-y-4">
+            <div>
+                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Email Address</label>
+                <div class="relative">
+                    <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-xs text-cream-muted"></i>
+                    <input type="email" id="custLoginEmail" required placeholder="you@example.com" class="w-full bg-charcoal border border-charcoal-border rounded-lg pl-9 pr-3 py-3 text-sm text-cream focus:outline-none focus:border-copper">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Password</label>
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-xs text-cream-muted"></i>
+                    <input type="password" id="custLoginPassword" required placeholder="••••••••" class="w-full bg-charcoal border border-charcoal-border rounded-lg pl-9 pr-3 py-3 text-sm text-cream focus:outline-none focus:border-copper">
+                </div>
+            </div>
+            <button type="submit" class="w-full py-3.5 bg-copper hover:bg-red-700 text-white font-bold text-xs uppercase tracking-widest rounded-lg transition shadow-lg shadow-copper/20">
+                Sign In to Account
+            </button>
+        </form>
+
+        <!-- CUSTOMER REGISTER FORM -->
+        <form id="customerRegisterForm" class="hidden space-y-4">
+            <div>
+                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Full Name</label>
+                <input type="text" id="custRegName" required placeholder="Juan Dela Cruz" class="w-full bg-charcoal border border-charcoal-border rounded-lg p-3 text-sm text-cream focus:outline-none focus:border-copper">
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Email Address</label>
+                <input type="email" id="custRegEmail" required placeholder="juan@gmail.com" class="w-full bg-charcoal border border-charcoal-border rounded-lg p-3 text-sm text-cream focus:outline-none focus:border-copper">
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Contact Number</label>
+                <input type="tel" id="custRegPhone" required placeholder="09123456789" class="w-full bg-charcoal border border-charcoal-border rounded-lg p-3 text-sm text-cream focus:outline-none focus:border-copper">
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Password</label>
+                <input type="password" id="custRegPassword" required placeholder="Create password" class="w-full bg-charcoal border border-charcoal-border rounded-lg p-3 text-sm text-cream focus:outline-none focus:border-copper">
+            </div>
+            <button type="submit" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-widest rounded-lg transition">
+                Create Customer Account
+            </button>
+        </form>
+
+        <div class="pt-4 border-t border-charcoal-border text-center">
+            <a href="index.html" class="text-xs text-cream-muted hover:text-copper-light transition block">
+                &larr; Back to Main Website
+            </a>
+        </div>
+    </div>
+
+    <!-- STAFF & ADMIN PORTAL (5-CLICK HIDDEN ACCESS) -->
+    <div id="staff-portal-box" class="hidden relative z-10 w-full max-w-md bg-charcoal-card border border-charcoal-border rounded-2xl p-8 shadow-2xl space-y-6">
+        <div class="text-center">
+            <a href="index.html" class="inline-block">
+                <span class="font-serif text-3xl font-bold tracking-widest uppercase text-copper-light">Estcom</span>
+                <span class="block text-[10px] tracking-[0.3em] text-cream-muted uppercase">Resto & Bar</span>
+            </a>
+            <h2 class="font-serif text-2xl font-bold text-cream mt-3">Staff & Admin Portal</h2>
+            <p class="text-xs text-cream-muted">Restricted access for authorized personnel only</p>
+        </div>
+
+        <div id="staff-error-box" class="hidden p-3 rounded-lg bg-red-950/60 border border-red-600/50 text-xs text-red-400">
+            Invalid username or password!
+        </div>
+
+        <form id="staffLoginForm" class="space-y-4">
+            <div>
+                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Staff Username / Email</label>
+                <div class="relative">
+                    <i class="fa-solid fa-user-shield absolute left-3.5 top-3.5 text-xs text-cream-muted"></i>
+                    <input type="text" id="staffUsername" required placeholder="admin@estcom.com" class="w-full bg-charcoal border border-charcoal-border rounded-lg pl-9 pr-3 py-3 text-sm text-cream focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wider text-cream-muted mb-1">Password</label>
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-xs text-cream-muted"></i>
+                    <input type="password" id="staffPassword" required placeholder="••••••••" class="w-full bg-charcoal border border-charcoal-border rounded-lg pl-9 pr-3 py-3 text-sm text-cream focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+            <button type="submit" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-widest rounded-lg transition shadow-lg shadow-emerald-900/30">
+                LOGIN TO ADMIN DASHBOARD
+            </button>
+        </form>
+
+        <div class="pt-4 border-t border-charcoal-border text-center space-y-2">
+            <button onclick="togglePortal('customer')" class="text-xs text-cream-muted hover:text-copper-light transition underline block mx-auto">
+                &larr; Back to Customer Sign In
+            </button>
+            <a href="index.html" class="text-xs text-cream-muted hover:text-cream transition block">
+                &larr; Back to Main Website
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 5-CLICK SECRET TRIGGER ON ESTCOM LOGO
+        let logoClickCount = 0;
+        let logoClickTimer = null;
+
+        document.getElementById('secret-logo-trigger').addEventListener('click', () => {
+            logoClickCount++;
+            clearTimeout(logoClickTimer);
+
+            if (logoClickCount >= 5) {
+                logoClickCount = 0;
+                togglePortal('staff');
+            } else {
+                logoClickTimer = setTimeout(() => {
+                    logoClickCount = 0;
+                }, 2000); // Resets if 2 seconds pass without next click
+            }
+        });
+
+        function togglePortal(target) {
+            const custBox = document.getElementById('customer-portal-box');
+            const staffBox = document.getElementById('staff-portal-box');
+            document.getElementById('cust-error-box').classList.add('hidden');
+            document.getElementById('staff-error-box').classList.add('hidden');
+
+            if (target === 'staff') {
+                custBox.classList.add('hidden');
+                staffBox.classList.remove('hidden');
+            } else {
+                staffBox.classList.add('hidden');
+                custBox.classList.remove('hidden');
+            }
+        }
+
+        function switchCustomerTab(tab) {
+            const loginForm = document.getElementById('customerLoginForm');
+            const regForm = document.getElementById('customerRegisterForm');
+            const btnLogin = document.getElementById('btn-cust-login');
+            const btnReg = document.getElementById('btn-cust-register');
+            document.getElementById('cust-error-box').classList.add('hidden');
+
+            if (tab === 'register') {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                btnReg.className = 'py-2 text-xs font-bold uppercase tracking-wider rounded bg-copper text-white transition';
+                btnLogin.className = 'py-2 text-xs font-bold uppercase tracking-wider rounded text-cream-muted hover:text-white transition';
+            } else {
+                regForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                btnLogin.className = 'py-2 text-xs font-bold uppercase tracking-wider rounded bg-copper text-white transition';
+                btnReg.className = 'py-2 text-xs font-bold uppercase tracking-wider rounded text-cream-muted hover:text-white transition';
+            }
+        }
+
+        // CUSTOMER SIGN IN (MYSQL)
+        document.getElementById('customerLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('custLoginEmail').value.trim();
+            const password = document.getElementById('custLoginPassword').value;
+            const errBox = document.getElementById('cust-error-box');
+
+            const res = await fetch('api.php?action=login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                localStorage.setItem('estcom_user_role', data.role);
+                localStorage.setItem('estcom_username', data.name);
+                if (data.phone) localStorage.setItem('estcom_user_phone', data.phone);
+                if (data.email) localStorage.setItem('estcom_user_email', data.email);
+                window.location.href = data.role === 'staff' ? 'admin.html' : 'index.html';
+            } else {
+                errBox.innerText = data.message || 'Invalid email or password!';
+                errBox.classList.remove('hidden');
+            }
+        });
+
+        // CUSTOMER REGISTER (MYSQL)
+        document.getElementById('customerRegisterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('custRegName').value.trim();
+            const email = document.getElementById('custRegEmail').value.trim();
+            const phone = document.getElementById('custRegPhone').value.trim();
+            const password = document.getElementById('custRegPassword').value;
+            const errBox = document.getElementById('cust-error-box');
+
+            const res = await fetch('api.php?action=register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, phone, password })
+            });
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                localStorage.setItem('estcom_user_role', 'customer');
+                localStorage.setItem('estcom_username', name);
+                localStorage.setItem('estcom_user_phone', phone);
+                localStorage.setItem('estcom_user_email', email);
+                window.location.href = 'index.html';
+            } else {
+                errBox.innerText = data.message || 'Registration failed.';
+                errBox.classList.remove('hidden');
+            }
+        });
+
+        // STAFF & ADMIN PORTAL LOGIN (MYSQL + ADMIN CREDENTIALS)
+        document.getElementById('staffLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = document.getElementById('staffUsername').value.trim();
+            const pass = document.getElementById('staffPassword').value;
+            const errBox = document.getElementById('staff-error-box');
+
+            if ((user.toLowerCase() === 'admin@estcom.com' || user.toLowerCase() === 'admin') && pass === 'admin123') {
+                localStorage.setItem('estcom_user_role', 'staff');
+                localStorage.setItem('estcom_username', 'ADMIN');
+                window.location.href = 'admin.html';
+                return;
+            }
+
+            const res = await fetch('api.php?action=login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: user, password: pass })
+            });
+            const data = await res.json();
+
+            if (data.status === 'success' && data.role === 'staff') {
+                localStorage.setItem('estcom_user_role', 'staff');
+                localStorage.setItem('estcom_username', data.name);
+                window.location.href = 'admin.html';
+            } else {
+                errBox.innerText = 'Invalid username or password!';
+                errBox.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

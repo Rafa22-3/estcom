@@ -1,0 +1,8 @@
+{
+  "name": "estcom-resto-bar",
+  "version": "1.0.0",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
+    "bcryptjs": "^2.4.3"
+  }
+}
