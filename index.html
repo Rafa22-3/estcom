@@ -1011,8 +1011,8 @@
 
                 try {
                     const [ordRes, bookRes] = await Promise.all([
-                        fetch('api.php?action=get_orders'),
-                        fetch('api.php?action=get_reservations')
+                        fetch('/.netlify/functions/api?action=get_orders'),
+                        fetch('/.netlify/functions/api?action=get_reservations')
                     ]);
                     const allOrders = await ordRes.json();
                     const allRes = await bookRes.json();
@@ -1124,7 +1124,7 @@
 
         async function renderCustomerOrders() {
             const username = localStorage.getItem('estcom_username') || '';
-            const res = await fetch('api.php?action=get_orders');
+            const res = await fetch('/.netlify/functions/api?action=get_orders');
             const allOrders = await res.json();
             const myOrders = allOrders.filter(o => o.name && o.name.toLowerCase() === username.toLowerCase());
             const container = document.getElementById('customer-orders-container');
@@ -1180,7 +1180,7 @@
 
         async function cancelCustomerOrder(db_id, orderCode) {
             if (!confirm(`Are you sure you want to cancel and delete order #${orderCode}?`)) return;
-            await fetch('api.php?action=delete_order', {
+            await fetch('/.netlify/functions/api?action=delete_order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ db_id })
@@ -1209,7 +1209,7 @@
 
         async function renderCustomerReservations() {
             const username = localStorage.getItem('estcom_username') || '';
-            const res = await fetch('api.php?action=get_reservations');
+            const res = await fetch('/.netlify/functions/api?action=get_reservations');
             const allRes = await res.json();
             const myRes = allRes.filter(r => r.name && r.name.toLowerCase() === username.toLowerCase());
             const container = document.getElementById('customer-reservations-container');
@@ -1268,7 +1268,7 @@
 
         async function cancelCustomerReservation(db_id, resCode) {
             if (!confirm(`Cancel reservation #${resCode}?`)) return;
-            await fetch('api.php?action=delete_reservation', {
+            await fetch('/.netlify/functions/api?action=delete_reservation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ db_id })
@@ -1429,7 +1429,7 @@
                 const itemsText = document.getElementById('custItems').value;
                 const total = parseFloat(document.getElementById('custTotal').value);
 
-                const res = await fetch('api.php?action=place_order', {
+                const res = await fetch('/.netlify/functions/api?action=place_order', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1489,7 +1489,7 @@
                     const time = document.getElementById('res-time').value;
                     const notes = document.getElementById('res-notes').value.trim();
 
-                    const res = await fetch('api.php?action=place_reservation', {
+                    const res = await fetch('/.netlify/functions/api?action=place_reservation', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ name, phone, type, guests, date, time, notes })
@@ -1514,7 +1514,7 @@
         // REVIEWS FROM DATABASE
         async function loadDatabaseReviews() {
             try {
-                const res = await fetch('api.php?action=get_reviews');
+                const res = await fetch('/.netlify/functions/api?action=get_reviews');
                 const dbReviews = await res.json();
                 if (dbReviews.length > 0) reviewsData.unshift(...dbReviews);
             } catch (err) {}
@@ -1562,7 +1562,7 @@
                 const stars = parseInt(document.getElementById('rev-stars').value);
                 const quote = document.getElementById('rev-quote').value;
 
-                await fetch('api.php?action=add_review', {
+                await fetch('/.netlify/functions/api?action=add_review', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ author, role, stars, quote })
