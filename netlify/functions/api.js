@@ -16,12 +16,13 @@ export const handler = async (event) => {
     // 1. REGISTER USER
     if (action === 'register') {
       const code = 'CUST-' + Math.floor(1000 + Math.random() * 9000);
+      const email = String(data.email || '').trim().toLowerCase();
       const hashed = await bcrypt.hash(data.password, 10);
 
       try {
         await sql`
           INSERT INTO users (user_code, name, email, phone, password, role)
-          VALUES (${code}, ${data.name}, ${data.email}, ${data.phone}, ${hashed}, 'customer')
+          VALUES (${code}, ${data.name}, ${email}, ${data.phone}, ${hashed}, 'customer')
         `;
         return json(200, { status: 'success', name: data.name, phone: data.phone });
       } catch (e) {
@@ -34,11 +35,13 @@ export const handler = async (event) => {
 
     // 2. LOGIN USER / ADMIN
     if (action === 'login') {
-      if (data.email === 'admin@estcom.com' && data.password === 'admin123') {
+      const email = String(data.email || '').trim().toLowerCase();
+
+      if (email === 'admin@estcom.com' && data.password === 'admin123') {
         return json(200, { status: 'success', role: 'staff', name: 'ADMIN' });
       }
 
-      const rows = await sql`SELECT * FROM users WHERE email = ${data.email} LIMIT 1`;
+      const rows = await sql`SELECT * FROM users WHERE LOWER(email) = ${email} LIMIT 1`;
       if (rows.length > 0) {
         const user = rows[0];
         const match = await bcrypt.compare(data.password, user.password);
