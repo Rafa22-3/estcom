@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In | Estcom Resto & Bar</title>
   
-   <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -158,7 +158,7 @@
             } else {
                 logoClickTimer = setTimeout(() => {
                     logoClickCount = 0;
-                }, 2000); // Resets if 2 seconds pass without next click
+                }, 2000);
             }
         });
 
@@ -197,14 +197,14 @@
             }
         }
 
-        // CUSTOMER SIGN IN (MYSQL)
+        // CUSTOMER SIGN IN
         document.getElementById('customerLoginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('custLoginEmail').value.trim();
             const password = document.getElementById('custLoginPassword').value;
             const errBox = document.getElementById('cust-error-box');
 
-            const res = await fetch('/.netlify/functions/api?action=register', {
+            const res = await fetch('/.netlify/functions/api?action=login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -223,7 +223,7 @@
             }
         });
 
-        // CUSTOMER REGISTER (MYSQL)
+        // CUSTOMER REGISTER
         document.getElementById('customerRegisterForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('custRegName').value.trim();
@@ -251,7 +251,7 @@
             }
         });
 
-        // STAFF & ADMIN PORTAL LOGIN (MYSQL + ADMIN CREDENTIALS)
+        // STAFF & ADMIN PORTAL LOGIN
         document.getElementById('staffLoginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const user = document.getElementById('staffUsername').value.trim();
@@ -265,7 +265,7 @@
                 return;
             }
 
-            const res = await fetch('/.netlify/functions/api?action=register', {
+            const res = await fetch('/.netlify/functions/api?action=login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: user, password: pass })
