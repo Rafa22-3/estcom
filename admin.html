@@ -436,7 +436,7 @@
         }
 
         async function renderKDS() {
-            const res = await fetch('api.php?action=get_orders');
+            const res = await fetch('/.netlify/functions/api?action=get_orders');
             cachedOrders = await res.json();
             const container = document.getElementById('kds-orders-container');
 
@@ -484,7 +484,7 @@
             if (order.status === 'Pending') nextStatus = 'Preparing';
             else if (order.status === 'Preparing') nextStatus = isDelivery ? 'On the Way' : 'Ready';
 
-            await fetch('api.php?action=update_order_status', {
+            await fetch('/.netlify/functions/api?action=update_order_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ db_id: order.db_id, status: nextStatus })
@@ -495,7 +495,7 @@
 
         async function deleteOrder(db_id) {
             if (!confirm('Remove this order from database?')) return;
-            await fetch('api.php?action=delete_order', {
+            await fetch('/.netlify/functions/api?action=delete_order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ db_id })
@@ -513,7 +513,7 @@
         }
 
         async function renderAdminReservations() {
-            const res = await fetch('api.php?action=get_reservations');
+            const res = await fetch('/.netlify/functions/api?action=get_reservations');
             cachedReservations = await res.json();
             const container = document.getElementById('reservations-admin-container');
             const activeBookings = cachedReservations.filter(r => r.status !== 'Completed').length;
@@ -560,7 +560,7 @@
             if (r.status === 'Pending') nextStatus = 'Confirmed';
             else if (r.status === 'Confirmed') nextStatus = 'Checked-In';
 
-            await fetch('api.php?action=update_res_status', {
+            await fetch('/.netlify/functions/api?action=update_res_status', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ db_id: r.db_id, status: nextStatus })
@@ -571,7 +571,7 @@
 
         async function deleteReservation(db_id) {
             if (!confirm('Remove this reservation?')) return;
-            await fetch('api.php?action=delete_res', {
+            await fetch('/.netlify/functions/api?action=delete_res', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ db_id })
@@ -605,7 +605,7 @@
         async function processPosCheckout() {
             if (posCart.length === 0) return alert('Please select items before checking out.');
             const total = posCart.reduce((sum, item) => sum + item.price, 0);
-            await fetch('api.php?action=place_order', {
+            await fetch('/.netlify/functions/api?action=place_order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -754,7 +754,7 @@
 
         // CUSTOMER REVIEWS (FROM REVIEWS TABLE)
         async function renderAdminReviews() {
-            const res = await fetch('api.php?action=get_reviews');
+            const res = await fetch('/.netlify/functions/api?action=get_reviews');
             cachedReviews = await res.json();
             const container = document.getElementById('admin-reviews-container');
             document.getElementById('reviews-count-badge').innerText = `${cachedReviews.length} Review${cachedReviews.length === 1 ? '' : 's'}`;
@@ -793,7 +793,7 @@
 
         async function deleteReview(db_id) {
             if (!confirm('Remove this review from database?')) return;
-            await fetch('api.php?action=delete_review', {
+            await fetch('/.netlify/functions/api?action=delete_review', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ db_id })
@@ -803,7 +803,7 @@
 
         // CUSTOMERS (FROM USERS TABLE)
         async function renderCustomers() {
-            const res = await fetch('api.php?action=get_users');
+            const res = await fetch('/.netlify/functions/api?action=get_users');
             const customers = await res.json();
             const tbody = document.getElementById('customers-table-body');
             document.getElementById('customer-count-badge').innerText = `${customers.length} Registered`;
@@ -829,7 +829,7 @@
 
         async function deleteCustomer(id) {
             if (!confirm('Remove this user account from MySQL?')) return;
-            await fetch('api.php?action=delete_user', {
+            await fetch('/.netlify/functions/api?action=delete_user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id })
