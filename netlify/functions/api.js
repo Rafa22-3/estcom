@@ -24,8 +24,8 @@ export const handler = async (event) => {
         `;
         return json(200, { status: 'success', name: data.name, phone: data.phone });
       } catch (e) {
-        return json(200, { status: 'error', message: 'Email already exists or invalid data.' });
-      }
+  return json(200, { status: 'error', message: e.message || String(e) });
+}
     }
 
     // 2. LOGIN USER / ADMIN
