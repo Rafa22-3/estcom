@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estcom | Resto & Bar</title>
     <!-- Tailwind CSS CDN -->
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -367,7 +366,7 @@
         </div>
     </section>
 
-    <!-- CUSTOMER PROFILE & LIVE TRACKER MODAL (ORDERS & RESERVATIONS) -->
+    <!-- CUSTOMER PROFILE & LIVE TRACKER MODAL (ORDERS, RESERVATIONS & LIVE FLOOR PLAN) -->
     <div id="profileTrackerModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[85] hidden flex items-center justify-center p-4">
         <div class="bg-charcoal w-full max-w-2xl max-h-[90vh] flex flex-col rounded-2xl border border-copper/50 shadow-2xl relative text-cream overflow-hidden">
             <!-- Modal Header -->
@@ -390,13 +389,16 @@
                 </div>
             </div>
 
-            <!-- Tracker Sub-Tabs (My Orders vs My Reservations) -->
-            <div class="flex border-b border-charcoal-border bg-charcoal-card px-6 pt-3 gap-2">
+            <!-- Tracker Sub-Tabs -->
+            <div class="flex flex-wrap border-b border-charcoal-border bg-charcoal-card px-6 pt-3 gap-2">
                 <button onclick="switchProfileSubTab('orders')" id="prof-tab-orders" class="px-4 py-2.5 rounded-t-lg text-xs font-bold uppercase tracking-wider bg-copper text-white transition flex items-center gap-1.5">
                     <i class="fa-solid fa-bag-shopping"></i> My Orders
                 </button>
                 <button onclick="switchProfileSubTab('reservations')" id="prof-tab-reservations" class="px-4 py-2.5 rounded-t-lg text-xs font-bold uppercase tracking-wider text-cream-muted hover:text-white transition flex items-center gap-1.5">
                     <i class="fa-solid fa-calendar-check"></i> My Table & KTV Bookings
+                </button>
+                <button onclick="switchProfileSubTab('floorplan')" id="prof-tab-floorplan" class="px-4 py-2.5 rounded-t-lg text-xs font-bold uppercase tracking-wider text-cream-muted hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-layer-group"></i> Live Floor Plan
                 </button>
             </div>
 
@@ -406,9 +408,21 @@
             <!-- Reservations List Body -->
             <div id="customer-reservations-container" class="hidden p-6 overflow-y-auto space-y-5 flex-1"></div>
 
+            <!-- Live Floor Plan Body -->
+            <div id="customer-floorplan-wrapper" class="hidden p-6 overflow-y-auto space-y-4 flex-1">
+                <div class="flex justify-between items-center border-b border-charcoal-border pb-3">
+                    <div>
+                        <h4 class="font-serif text-lg font-bold text-cream">Live Table & KTV Room Status</h4>
+                        <p class="text-xs text-cream-muted">Updated in real time by Estcom front desk staff</p>
+                    </div>
+                    <span id="modal-occupied-badge" class="text-xs font-mono text-emerald-400">0 / 4 Occupied</span>
+                </div>
+                <div id="customer-floorplan-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+            </div>
+
             <!-- Modal Footer -->
             <div class="p-4 border-t border-charcoal-border bg-charcoal-light flex justify-between items-center text-xs text-cream-muted">
-                <span><i class="fa-solid fa-circle-info text-copper-light mr-1"></i> Updates live when Estcom staff approves or updates your request.</span>
+                <span><i class="fa-solid fa-circle-info text-copper-light mr-1"></i> Updates live when Estcom staff updates your request or floor plan.</span>
                 <button onclick="closeProfileModal()" class="px-4 py-2 bg-copper hover:bg-red-700 text-white font-semibold rounded text-xs uppercase tracking-wider transition">Close</button>
             </div>
         </div>
@@ -460,7 +474,7 @@
     <!-- RESERVATION SECTION -->
     <section id="reservation" class="min-h-screen flex flex-col justify-center bg-charcoal relative border-b border-charcoal-border py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
                 
                 <div class="lg:col-span-5 space-y-6">
                     <span class="text-xs uppercase tracking-widest text-copper-light font-semibold">Direct Bookings</span>
@@ -501,6 +515,23 @@
                                 <p class="text-xs text-cream-muted mt-1">+63 912 345 6789</p>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- LIVE FLOOR PLAN & ROOM AVAILABILITY WIDGET -->
+                    <div class="bg-charcoal-light border border-charcoal-border rounded-xl p-5 space-y-3 shadow-xl">
+                        <div class="flex items-center justify-between border-b border-charcoal-border pb-2.5">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-cream">Live Floor & KTV Status</h4>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span id="public-occupied-badge" class="text-[11px] font-mono text-emerald-400">0 / 4 Occupied</span>
+                                <button type="button" onclick="loadPublicFloorPlan(true)" title="Refresh Live Status" class="text-cream-muted hover:text-emerald-400 text-xs transition">
+                                    <i class="fa-solid fa-rotate"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="public-floor-plan-grid" class="grid grid-cols-2 gap-2.5"></div>
                     </div>
                 </div>
 
@@ -712,7 +743,8 @@
             </form>
         </div>
     </div>
-<!-- MAP MODAL -->
+
+    <!-- MAP MODAL -->
     <div id="map-modal" class="fixed inset-0 z-[80] bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="bg-charcoal p-6 max-w-3xl w-full rounded-2xl space-y-4 border border-copper/50 text-cream shadow-2xl relative gold-border-glow">
             <div class="flex justify-between items-center border-b border-charcoal-border pb-3">
@@ -879,7 +911,7 @@
         <span id="toast-message" class="text-xs uppercase tracking-wider font-medium">Item updated</span>
     </div>
 
-   <!-- ACCURATE JAVASCRIPT MENU DATA & LIVE SYNC -->
+    <!-- JAVASCRIPT MENU DATA & LIVE SYNC -->
     <script>
         const unifiedMenuData = {
             beverages: [
@@ -966,6 +998,13 @@
             { quote: "The private KTV room for ₱600/hr was worth every peso. Clean room, delicious food, and crisp sound system!", author: "Kevin Tan", role: "Birthday Celebrant", stars: 5 }
         ];
 
+        let publicFloorPlan = [
+            { room_code: 'Table 01', room_type: 'Dining Table', capacity: '4 Pax', occupied: false },
+            { room_code: 'Table 02', room_type: 'Dining Table', capacity: '4 Pax', occupied: false },
+            { room_code: 'Table 03', room_type: 'Dining Table', capacity: '6 Pax', occupied: false },
+            { room_code: 'KTV VIP 01', room_type: 'KTV Room (₱600/hr)', capacity: '12 Pax', occupied: false }
+        ];
+
         let currentSubCategory = 'all';
         let cart = JSON.parse(localStorage.getItem('estcom_temp_cart')) || [];
         let selectedDish = null;
@@ -980,6 +1019,7 @@
             setupCartListeners();
             setupReservationForm();
             loadDatabaseReviews();
+            loadPublicFloorPlan(false);
             setupMobileMenu();
             setDefaultDate();
             setupOrderFormListener();
@@ -1052,6 +1092,71 @@
             showToast('Logged out successfully');
         }
 
+        // LIVE FLOOR PLAN SYNC (REFLECTS ADMIN PORTAL CHANGES)
+        function renderFloorPlanCards() {
+            const occupiedCount = publicFloorPlan.filter(t => t.occupied).length;
+            const statusText = `${occupiedCount} / ${publicFloorPlan.length} Occupied`;
+
+            const pubBadge = document.getElementById('public-occupied-badge');
+            if (pubBadge) pubBadge.innerText = statusText;
+
+            const modBadge = document.getElementById('modal-occupied-badge');
+            if (modBadge) modBadge.innerText = statusText;
+
+            const pubGrid = document.getElementById('public-floor-plan-grid');
+            if (pubGrid) {
+                pubGrid.innerHTML = publicFloorPlan.map(t => `
+                    <div class="p-3 rounded-lg border ${t.occupied ? 'bg-red-950/30 border-red-600/60' : 'bg-charcoal border-charcoal-border'}">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-cream text-xs">${t.room_code}</span>
+                            <span class="w-2 h-2 rounded-full ${t.occupied ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'}"></span>
+                        </div>
+                        <p class="text-[11px] text-cream-muted">${t.room_type} • ${t.capacity}</p>
+                        <span class="inline-block mt-2 text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded ${t.occupied ? 'bg-red-900/40 text-red-400' : 'bg-emerald-900/40 text-emerald-400'}">
+                            ${t.occupied ? 'Occupied' : 'Available'}
+                        </span>
+                    </div>
+                `).join('');
+            }
+
+            const modGrid = document.getElementById('customer-floorplan-container');
+            if (modGrid) {
+                modGrid.innerHTML = publicFloorPlan.map(t => `
+                    <div class="p-4 rounded-xl border ${t.occupied ? 'bg-red-950/30 border-red-600/60' : 'bg-charcoal-light border-charcoal-border'}">
+                        <div class="flex justify-between items-center mb-2">
+                            <h5 class="font-bold text-cream text-sm">${t.room_code}</h5>
+                            <span class="w-2.5 h-2.5 rounded-full ${t.occupied ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'}"></span>
+                        </div>
+                        <p class="text-xs text-cream-muted">${t.room_type}</p>
+                        <p class="text-[11px] text-cream-muted/70 mt-0.5">Capacity: ${t.capacity}</p>
+                        <span class="inline-block mt-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded ${t.occupied ? 'bg-red-900/40 text-red-400' : 'bg-emerald-900/40 text-emerald-400'}">
+                            ${t.occupied ? 'Currently Occupied' : 'Available Now'}
+                        </span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function loadPublicFloorPlan(notify = false) {
+            renderFloorPlanCards();
+            try {
+                const res = await fetch('/.netlify/functions/api?action=get_tables');
+                const rows = await res.json();
+                if (Array.isArray(rows) && rows.length > 0) {
+                    publicFloorPlan = rows.map(r => ({
+                        room_code: r.room_code,
+                        room_type: r.room_type,
+                        capacity: r.capacity,
+                        occupied: Boolean(r.occupied)
+                    }));
+                    renderFloorPlanCards();
+                }
+                if (notify) showToast('Floor Plan & KTV availability refreshed!');
+            } catch (err) {
+                console.error('Floor plan sync error:', err);
+            }
+        }
+
         function openProfileModal(defaultTab = 'orders') {
             const role = localStorage.getItem('estcom_user_role');
             const username = localStorage.getItem('estcom_username');
@@ -1073,22 +1178,31 @@
         function switchProfileSubTab(tab) {
             const ordersPanel = document.getElementById('customer-orders-container');
             const resPanel = document.getElementById('customer-reservations-container');
+            const floorPanel = document.getElementById('customer-floorplan-wrapper');
             const ordersBtn = document.getElementById('prof-tab-orders');
             const resBtn = document.getElementById('prof-tab-reservations');
+            const floorBtn = document.getElementById('prof-tab-floorplan');
 
             const activeCls = 'px-4 py-2.5 rounded-t-lg text-xs font-bold uppercase tracking-wider bg-copper text-white transition flex items-center gap-1.5';
             const inactiveCls = 'px-4 py-2.5 rounded-t-lg text-xs font-bold uppercase tracking-wider text-cream-muted hover:text-white transition flex items-center gap-1.5';
 
+            ordersPanel.classList.add('hidden');
+            resPanel.classList.add('hidden');
+            floorPanel.classList.add('hidden');
+            ordersBtn.className = inactiveCls;
+            resBtn.className = inactiveCls;
+            floorBtn.className = inactiveCls;
+
             if (tab === 'reservations') {
-                ordersPanel.classList.add('hidden');
                 resPanel.classList.remove('hidden');
-                ordersBtn.className = inactiveCls;
                 resBtn.className = activeCls;
                 renderCustomerReservations();
+            } else if (tab === 'floorplan') {
+                floorPanel.classList.remove('hidden');
+                floorBtn.className = activeCls;
+                loadPublicFloorPlan(false);
             } else {
-                resPanel.classList.add('hidden');
                 ordersPanel.classList.remove('hidden');
-                resBtn.className = inactiveCls;
                 ordersBtn.className = activeCls;
                 renderCustomerOrders();
             }
@@ -1097,6 +1211,7 @@
         function refreshProfileTracker() {
             renderCustomerOrders();
             renderCustomerReservations();
+            loadPublicFloorPlan(false);
             showToast('Live status updated from database!');
         }
 
@@ -1259,7 +1374,7 @@
                         ${r.notes ? `<p><i class="fa-solid fa-note-sticky text-copper-light w-4"></i> <strong>Notes:</strong> ${r.notes}</p>` : ''}
                         <div class="flex justify-between items-center pt-2 border-t border-charcoal-border text-xs font-bold">
                             <span class="text-cream-muted">Rate / Deposit:</span>
-                            <span class="font-mono text-sm text-emerald-400">${r.type.includes('KTV') ? '₱600 / Hour (₱0 Deposit)' : 'Free Table Reservation'}</span>
+                            <span class="font-mono text-sm text-emerald-400">${(r.type || '').includes('KTV') ? '₱600 / Hour (₱0 Deposit)' : 'Free Table Reservation'}</span>
                         </div>
                     </div>
                 </div>`;
@@ -1415,7 +1530,7 @@
             checkUserSession();
         }
 
-        // SINGLE MYSQL ORDER FORM SUBMIT
+        // ORDER FORM SUBMIT
         function setupOrderFormListener() {
             const orderForm = document.getElementById('orderForm');
             if (!orderForm) return;
@@ -1523,7 +1638,15 @@
 
         function openReviewModal() { document.getElementById('reviewModal').classList.remove('hidden'); }
         function closeReviewModal() { document.getElementById('reviewModal').classList.add('hidden'); }
-        function openMapModal() { document.getElementById('map-modal').classList.remove('hidden'); }
+
+        function openMapModal() {
+            const modal = document.getElementById('map-modal');
+            const frame = document.getElementById('estcom-map-frame');
+            modal.classList.remove('hidden');
+            if (frame) {
+                frame.src = "https://maps.google.com/maps?q=Cosico%20Avenue,%20Del%20Remedio,%20San%20Pablo%20City,%20Laguna&t=&z=16&ie=UTF8&iwloc=&output=embed";
+            }
+        }
         function closeMapModal() { document.getElementById('map-modal').classList.add('hidden'); }
 
         function setupReviewCarousel() {
@@ -1601,16 +1724,6 @@
                 dateInput.value = tomorrow.toISOString().split('T')[0];
             }
         }
-
-        function openMapModal() {
-            const modal = document.getElementById('map-modal');
-            const frame = document.getElementById('estcom-map-frame');
-            modal.classList.remove('hidden');
-            if (frame) {
-                frame.src = "https://maps.google.com/maps?q=Cosico%20Avenue,%20Del%20Remedio,%20San%20Pablo%20City,%20Laguna&t=&z=16&ie=UTF8&iwloc=&output=embed";
-            }
-        }
-        function closeMapModal() { document.getElementById('map-modal').classList.add('hidden'); }
     </script>
 </body>
 </html>
