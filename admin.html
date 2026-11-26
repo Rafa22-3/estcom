@@ -29,7 +29,6 @@
     </script>
 
     <style>
-        /* Manipis at Dark Theme Scrollbar para sa buong page at tables */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -229,11 +228,20 @@
             </div>
         </div>
 
-        <!-- TAB 4: TABLES & KTV ROOM STATUS -->
+        <!-- TAB 4: TABLES & KTV ROOM STATUS (LIVE SYNCED TO USER PANEL) -->
         <div id="panel-tables" class="hidden space-y-4">
-            <div class="flex justify-between items-center">
-                <h3 class="font-serif text-xl font-bold text-cream">Floor Plan & Room Occupancy</h3>
-                <span id="stat-occupied-tables" class="text-xs text-emerald-400 font-mono">0 / 4 Occupied</span>
+            <div class="flex flex-wrap justify-between items-center gap-2">
+                <div>
+                    <h3 class="font-serif text-xl font-bold text-cream">Floor Plan & Room Occupancy</h3>
+                    <p class="text-xs text-cream-muted">Click any table or KTV room to toggle status — updates reflect live on the Customer Website.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="stat-occupied-tables" class="text-xs text-emerald-400 font-mono">0 / 4 Occupied</span>
+                    <button onclick="renderTables()" class="px-3 py-1.5 bg-charcoal-card border border-charcoal-border hover:border-emerald-500 text-emerald-400 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-rotate"></i>
+                        <span>Sync</span>
+                    </button>
+                </div>
             </div>
             <div id="tables-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
         </div>
@@ -358,9 +366,9 @@
                 renderKDS(),
                 renderAdminReservations(),
                 renderCustomers(),
-                renderAdminReviews()
+                renderAdminReviews(),
+                renderTables()
             ]);
-            renderTables();
             updateCombinedRevenueStats();
             renderAnalyticsDiagram();
         }
@@ -386,7 +394,6 @@
             if (tab === 'customers') renderCustomers();
         }
 
-        // COMPUTE KTV EARNINGS (₱600/hr for Confirmed / Checked-In / Completed KTV Bookings)
         function getKtvEarnings() {
             return cachedReservations
                 .filter(r => (r.type || '').includes('KTV') && r.status !== 'Pending')
@@ -627,8 +634,8 @@
             renderAnalyticsDiagram();
         }
 
-        // FLOOR PLAN
-        function renderTables() {
+        // FLOOR PLAN (LIVE SYNCED WITH NEON POSTGRESQL)
+        function drawTablesGrid() {
             const grid = document.getElementById('tables-grid');
             if (!grid) return;
             const occupiedCount = tableList.filter(t => t.occupied).length;
@@ -645,7 +652,43 @@
                 </button>
             `).join('');
         }
-        function toggleTable(idx) { tableList[idx].occupied = !tableList[idx].occupied; renderTables(); }
+
+        async function renderTables() {
+            drawTablesGrid();
+            try {
+                const res = await fetch('/.netlify/functions/api?action=get_tables');
+                const dbTables = await res.json();
+                if (Array.isArray(dbTables) && dbTables.length > 0) {
+                    tableList = dbTables.map(t => ({
+                        id: t.room_code,
+                        type: t.room_type,
+                        cap: t.capacity,
+                        occupied: Boolean(t.occupied)
+                    }));
+                    drawTablesGrid();
+                }
+            } catch (err) {
+                console.error('Error loading floor plan:', err);
+            }
+        }
+
+        async function toggleTable(idx) {
+            const target = tableList[idx];
+            if (!target) return;
+            const newStatus = !target.occupied;
+            tableList[idx].occupied = newStatus;
+            drawTablesGrid();
+
+            try {
+                await fetch('/.netlify/functions/api?action=toggle_table', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ room_code: target.id, occupied: newStatus })
+                });
+            } catch (err) {
+                console.error('Error updating table status:', err);
+            }
+        }
 
         // EARNINGS & ANALYTICS DIAGRAM (FOOD + KTV)
         function renderAnalyticsDiagram() {
