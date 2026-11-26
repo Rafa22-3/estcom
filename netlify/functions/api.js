@@ -202,6 +202,42 @@ export const handler = async (event) => {
       return json(200, { status: 'success' });
     }
 
+    // 14. FLOOR PLAN (GET & TOGGLE LIVE STATUS FOR ADMIN & USER PANEL)
+    if (action === 'get_tables') {
+      await sql`
+        CREATE TABLE IF NOT EXISTS floor_plan (
+          id SERIAL PRIMARY KEY,
+          room_code VARCHAR(50) UNIQUE NOT NULL,
+          room_type VARCHAR(100) NOT NULL,
+          capacity VARCHAR(50) NOT NULL,
+          occupied BOOLEAN DEFAULT FALSE,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `;
+      await sql`
+        INSERT INTO floor_plan (room_code, room_type, capacity, occupied)
+        VALUES
+          ('Table 01', 'Dining Table', '4 Pax', FALSE),
+          ('Table 02', 'Dining Table', '4 Pax', FALSE),
+          ('Table 03', 'Dining Table', '6 Pax', FALSE),
+          ('KTV VIP 01', 'KTV Room (₱600/hr)', '12 Pax', FALSE)
+        ON CONFLICT (room_code) DO NOTHING
+      `;
+      const rows = await sql`SELECT * FROM floor_plan ORDER BY id ASC`;
+      return json(200, rows);
+    }
+
+    if (action === 'toggle_table') {
+      const roomCode = String(data.room_code || '');
+      const occupied = Boolean(data.occupied);
+      await sql`
+        UPDATE floor_plan
+        SET occupied = ${occupied}, updated_at = CURRENT_TIMESTAMP
+        WHERE room_code = ${roomCode}
+      `;
+      return json(200, { status: 'success' });
+    }
+
     return json(200, { status: 'error', message: 'Unknown action: ' + action });
   } catch (err) {
     return json(500, { status: 'error', message: err.message });
