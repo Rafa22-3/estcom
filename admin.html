@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        <!-- DASHBOARD NAVIGATION TABS (Malaki, Full-Width, Walang Scrollbar) -->
+        <!-- DASHBOARD NAVIGATION TABS -->
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 bg-charcoal-card p-2 rounded-xl border border-charcoal-border">
             <button onclick="switchAdminTab('kds')" id="tab-btn-kds" class="px-3 py-3 rounded-lg font-bold text-xs uppercase tracking-wider transition-all bg-emerald-600 text-white flex items-center justify-center gap-2 shadow-sm">
                 <i class="fa-solid fa-utensils text-sm"></i>
@@ -360,6 +360,7 @@
                 renderCustomers(),
                 renderAdminReviews()
             ]);
+            renderTables();
             updateCombinedRevenueStats();
             renderAnalyticsDiagram();
         }
@@ -379,6 +380,7 @@
 
             if (tab === 'kds') renderKDS().then(() => { updateCombinedRevenueStats(); renderAnalyticsDiagram(); });
             if (tab === 'reservations') renderAdminReservations().then(() => { updateCombinedRevenueStats(); renderAnalyticsDiagram(); });
+            if (tab === 'tables') renderTables();
             if (tab === 'analytics') renderAnalyticsDiagram();
             if (tab === 'reviews') renderAdminReviews();
             if (tab === 'customers') renderCustomers();
@@ -543,7 +545,7 @@
                         ${r.notes ? `<p class="text-[11px] text-cream-muted/80 pt-1 border-t border-charcoal-border/50 mt-2"><strong>Notes:</strong> ${r.notes}</p>` : ''}
                     </div>
                     <div class="flex justify-between items-center pt-2 border-t border-charcoal-border">
-                        <span class="text-[11px] text-emerald-400 font-semibold">${r.type.includes('KTV') ? '₱600/hr' : 'Free Table'}</span>
+                        <span class="text-[11px] text-emerald-400 font-semibold">${(r.type || '').includes('KTV') ? '₱600/hr' : 'Free Table'}</span>
                         <div class="flex items-center gap-2">
                             <button onclick="advanceReservationStatus(${idx})" class="px-3 py-1.5 ${r.status === 'Completed' ? 'bg-zinc-700 cursor-default' : 'bg-blue-600 hover:bg-blue-500'} text-white text-xs font-bold rounded transition">${getReservationActionLabel(r.status)}</button>
                             <button onclick="deleteReservation(${r.db_id})" class="px-2 py-1.5 bg-red-950/60 border border-red-600/50 text-red-400 hover:bg-red-600 hover:text-white text-xs rounded transition"><i class="fa-solid fa-trash"></i></button>
@@ -618,7 +620,7 @@
                     items: posCart.map(i => `1x ${i.name}`)
                 })
             });
-            alert('Payment Successful! Order saved to MySQL & sent to KDS.');
+            alert('Payment Successful! Order saved to database & sent to KDS.');
             posCart = [];
             renderPosCart();
             await renderKDS();
@@ -628,6 +630,7 @@
         // FLOOR PLAN
         function renderTables() {
             const grid = document.getElementById('tables-grid');
+            if (!grid) return;
             const occupiedCount = tableList.filter(t => t.occupied).length;
             document.getElementById('stat-occupied-tables').innerText = `${occupiedCount} / ${tableList.length} Occupied`;
             grid.innerHTML = tableList.map((t, idx) => `
@@ -637,6 +640,7 @@
                         <span class="w-2.5 h-2.5 rounded-full ${t.occupied ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'}"></span>
                     </div>
                     <p class="text-xs text-cream-muted">${t.type}</p>
+                    <p class="text-[11px] text-cream-muted/70 mt-0.5">${t.cap}</p>
                     <span class="inline-block mt-3 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded ${t.occupied ? 'bg-red-900/40 text-red-400' : 'bg-emerald-900/40 text-emerald-400'}">${t.occupied ? 'Occupied' : 'Available'}</span>
                 </button>
             `).join('');
@@ -804,7 +808,8 @@
         // CUSTOMERS (FROM USERS TABLE)
         async function renderCustomers() {
             const res = await fetch('/.netlify/functions/api?action=get_users');
-            const customers = await res.json();
+            const allUsers = await res.json();
+            const customers = allUsers.filter(u => (u.role || 'customer').toLowerCase() === 'customer');
             const tbody = document.getElementById('customers-table-body');
             document.getElementById('customer-count-badge').innerText = `${customers.length} Registered`;
             document.getElementById('stat-total-customers').innerText = `${customers.length} Account${customers.length === 1 ? '' : 's'}`;
@@ -815,11 +820,11 @@
             }
             tbody.innerHTML = customers.map(c => `
                 <tr class="hover:bg-charcoal-light/50 transition">
-                    <td class="p-4 font-mono text-copper-light font-bold">${c.user_code}</td>
-                    <td class="p-4 font-semibold text-cream">${c.name}</td>
-                    <td class="p-4 text-cream-muted">${c.email}</td>
-                    <td class="p-4 text-cream-muted">${c.phone}</td>
-                    <td class="p-4 text-emerald-400">${c.date_joined}</td>
+                    <td class="p-4 font-mono text-copper-light font-bold">${c.user_code || '-'}</td>
+                    <td class="p-4 font-semibold text-cream">${c.name || '-'}</td>
+                    <td class="p-4 text-cream-muted">${c.email || '-'}</td>
+                    <td class="p-4 text-cream-muted">${c.phone || '-'}</td>
+                    <td class="p-4 text-emerald-400">${c.date_joined || '-'}</td>
                     <td class="p-4 text-right">
                         <button onclick="deleteCustomer(${c.id})" class="px-2.5 py-1 bg-red-950/60 border border-red-600/50 text-red-400 hover:bg-red-600 hover:text-white rounded text-[11px] transition">Remove</button>
                     </td>
@@ -828,7 +833,7 @@
         }
 
         async function deleteCustomer(id) {
-            if (!confirm('Remove this user account from MySQL?')) return;
+            if (!confirm('Remove this user account from database?')) return;
             await fetch('/.netlify/functions/api?action=delete_user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
